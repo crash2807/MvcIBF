@@ -14,6 +14,14 @@ namespace MvcIBF.Data
         {
         }
 
-        public DbSet<Movie>? Movie { get; set; }
+        public DbSet<Movie>? Movies { get; set; }
+        public DbSet<VOD>? VODs { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Movie>().ToTable(nameof(Movie))
+                .HasMany(c => c.VODs)
+                .WithMany(i => i.Movies);
+
+        }
     }
 }

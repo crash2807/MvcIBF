@@ -18,6 +18,7 @@ namespace MvcIBF.Models
         [Required]
         [Display(Name = "Opis")]
         public string? MovieDescription { get; set; }
+        public ICollection<VOD>? VODs { get; set; }
         
     }
 }

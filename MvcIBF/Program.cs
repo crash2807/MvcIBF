@@ -2,13 +2,14 @@
 using Microsoft.Extensions.DependencyInjection;
 using MvcIBF.Data;
 using MvcIBF.Models;
-
+using MvcIBF.Repository;
+using MvcIBF.Repository.IRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<MvcIBFContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MvcIBFContext") ?? throw new InvalidOperationException("Connection string 'MvcIBFContext' not found.")));
 
-// Add services to the container.
+builder.Services.AddScoped<IVODRepository, VODRepository>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

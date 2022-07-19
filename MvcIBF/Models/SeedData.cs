@@ -15,10 +15,25 @@ namespace MvcIBF.Models
             {
                 
                 // Look for any movies.
-                if (context.Movie.Any())
+                if (context.Movies.Any())
                 {
                     return;   // DB has been seeded
                 }
+                var movie1 = new Movie
+                {
+                    MovieTitle = "Spider-Man: Bez drogi do domu",
+                    MovieDescription = "Kiedy cały świat dowiaduje się, że pod maską Spider Mana skrywa się Peter Parker, superbohater decyduje się zwrócić o pomoc do Doktora Strange'a.",
+                    ReleaseDate = new DateTime(2021, 12, 17),
+                    Runtime = 150
+                };
+                var movie2 = new Movie
+                {
+                    MovieDescription = "Historia Jordana Belforta, brokera, którego błyskawiczna droga na szczyt i rozrzutny styl życia wzbudziły zainteresowanie FBI.",
+                    MovieTitle = "Wilk z Wall Street",
+                    Runtime = 179,
+                    ReleaseDate = new DateTime(2014, 1, 3)
+                };
+
                 
                 context.AddRange(
                     new Movie
@@ -51,8 +66,11 @@ namespace MvcIBF.Models
                         MovieDescription= "Cierpiący na bezsenność mężczyzna poznaje gardzącego konsumpcyjnym stylem życia Tylera Durdena, który jest jego zupełnym przeciwieństwem.",
                         ReleaseDate=new DateTime(2000,2,11),
                         Runtime=139
-                    }
+                    }, movie1,movie2
                     ) ;
+                context.AddRange(new VOD { VodName = "Netflix"//,Movies= (ICollection<Movie>)movie2
+                }, new VOD { VodName= "HBO Max"}, new VOD { VodName = "Disney+"//, Movies = (ICollection<Movie>)movie1
+                });
                 context.SaveChanges();
             }
         }

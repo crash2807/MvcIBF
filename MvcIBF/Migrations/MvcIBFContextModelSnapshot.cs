@@ -22,6 +22,21 @@ namespace MvcIBF.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("MovieVOD", b =>
+                {
+                    b.Property<int>("MoviesMovieId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VODsVodId")
+                        .HasColumnType("int");
+
+                    b.HasKey("MoviesMovieId", "VODsVodId");
+
+                    b.HasIndex("VODsVodId");
+
+                    b.ToTable("MovieVOD");
+                });
+
             modelBuilder.Entity("MvcIBF.Models.Movie", b =>
                 {
                     b.Property<int>("MovieId")
@@ -46,7 +61,39 @@ namespace MvcIBF.Migrations
 
                     b.HasKey("MovieId");
 
-                    b.ToTable("Movie");
+                    b.ToTable("Movie", (string)null);
+                });
+
+            modelBuilder.Entity("MvcIBF.Models.VOD", b =>
+                {
+                    b.Property<int>("VodId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VodId"), 1L, 1);
+
+                    b.Property<string>("VodName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("VodId");
+
+                    b.ToTable("VODs");
+                });
+
+            modelBuilder.Entity("MovieVOD", b =>
+                {
+                    b.HasOne("MvcIBF.Models.Movie", null)
+                        .WithMany()
+                        .HasForeignKey("MoviesMovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MvcIBF.Models.VOD", null)
+                        .WithMany()
+                        .HasForeignKey("VODsVodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

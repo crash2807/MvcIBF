@@ -22,26 +22,27 @@ namespace MvcIBF.Controllers
         // GET: Movies
         public async Task<IActionResult> Index(string searchString)
         {
-            var movies = from m in _context.Movie
+            var movies = from m in _context.Movies
                          select m;
+            var vods = _context.Movies.Include(c => c.VODs);
 
             if (!String.IsNullOrEmpty(searchString))
             {
                 movies = movies.Where(s => s.MovieTitle!.Contains(searchString));
             }
 
-            return View(await movies.ToListAsync());
+            return View(await vods.ToListAsync());
         }
 
         // GET: Movies/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Movie == null)
+            if (id == null || _context.Movies == null)
             {
                 return NotFound();
             }
 
-            var movie = await _context.Movie
+            var movie = await _context.Movies.Include(c => c.VODs)
                 .FirstOrDefaultAsync(m => m.MovieId == id);
             if (movie == null)
             {
@@ -62,7 +63,7 @@ namespace MvcIBF.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MovieId,MovieTitle,ReleaseDate,Runtime,MovieDescription")] Movie movie)
+        public async Task<IActionResult> Create([Bind("MovieId,MovieTitle,ReleaseDate,Runtime,MovieDescription,VODs")] Movie movie)
         {
             if (ModelState.IsValid)
             {
@@ -76,12 +77,12 @@ namespace MvcIBF.Controllers
         // GET: Movies/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Movie == null)
+            if (id == null || _context.Movies == null)
             {
                 return NotFound();
             }
 
-            var movie = await _context.Movie.FindAsync(id);
+            var movie = await _context.Movies.FindAsync(id);
             if (movie == null)
             {
                 return NotFound();
@@ -127,12 +128,12 @@ namespace MvcIBF.Controllers
         // GET: Movies/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Movie == null)
+            if (id == null || _context.Movies == null)
             {
                 return NotFound();
             }
 
-            var movie = await _context.Movie
+            var movie = await _context.Movies
                 .FirstOrDefaultAsync(m => m.MovieId == id);
             if (movie == null)
             {
@@ -147,14 +148,14 @@ namespace MvcIBF.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Movie == null)
+            if (_context.Movies == null)
             {
                 return Problem("Entity set 'MvcIBFContext.Movie'  is null.");
             }
-            var movie = await _context.Movie.FindAsync(id);
+            var movie = await _context.Movies.FindAsync(id);
             if (movie != null)
             {
-                _context.Movie.Remove(movie);
+                _context.Movies.Remove(movie);
             }
             
             await _context.SaveChangesAsync();
@@ -163,7 +164,8 @@ namespace MvcIBF.Controllers
 
         private bool MovieExists(int id)
         {
-          return (_context.Movie?.Any(e => e.MovieId == id)).GetValueOrDefault();
+          return (_context.Movies?.Any(e => e.MovieId == id)).GetValueOrDefault();
         }
+        
     }
 }
