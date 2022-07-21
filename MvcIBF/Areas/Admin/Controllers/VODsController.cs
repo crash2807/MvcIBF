@@ -1,36 +1,37 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MvcIBF.Data;
 using MvcIBF.Models;
 using MvcIBF.Repository.IRepository;
 
-namespace MvcIBF.Controllers
+namespace MvcIBF.Areas.Admin.Controllers
 {
     public class VODsController : Controller
     {
-        private readonly IVODRepository _context;
+        private readonly IUnitOfWork _context;
 
-        public VODsController(IVODRepository context)
+        public VODsController(IUnitOfWork context)
         {
             _context = context;
         }
 
         // GET: VODs
-        public  IActionResult Index()
+        public IActionResult Index()
         {
-            IEnumerable<VOD> vodsList = _context.GetAll();
+            IEnumerable<VOD> vodsList = _context.VOD.GetAll();
             return View(vodsList);
         }
 
         // GET: VODs/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.GetAll == null)
+            if (id == null || _context.VOD.GetAll == null)
             {
                 return NotFound();
             }
 
-            var vOD =  _context
+            var vOD = _context.VOD
                 .GetFirstOrDefault(m => m.VodId == id);
             if (vOD == null)
             {
@@ -55,7 +56,7 @@ namespace MvcIBF.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(vOD);
+                _context.VOD.Add(vOD);
                 _context.Save();
                 return RedirectToAction(nameof(Index));
             }
@@ -65,12 +66,13 @@ namespace MvcIBF.Controllers
         // GET: VODs/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.GetAll() == null)
+            if (id == null || _context.VOD.GetAll() == null)
             {
                 return NotFound();
             }
-
-            var vOD = _context
+            IEnumerable<Movie> moviesList = _context.Movie.GetAll();
+            var multiSelectList = new MultiSelectList(moviesList, "MovieId", "MovieTitle");
+            var vOD = _context.VOD
                .GetFirstOrDefault(m => m.VodId == id);
             if (vOD == null)
             {
@@ -95,7 +97,7 @@ namespace MvcIBF.Controllers
             {
                 try
                 {
-                    _context.Update(vOD);
+                    _context.VOD.Update(vOD);
                     _context.Save();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -117,12 +119,12 @@ namespace MvcIBF.Controllers
         // GET: VODs/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.GetAll == null)
+            if (id == null || _context.VOD.GetAll == null)
             {
                 return NotFound();
             }
 
-            var vOD = _context
+            var vOD = _context.VOD
                 .GetFirstOrDefault(m => m.VodId == id);
             if (vOD == null)
             {
@@ -137,25 +139,25 @@ namespace MvcIBF.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.GetAll == null)
+            if (_context.VOD.GetAll == null)
             {
                 return Problem("Entity set 'MvcIBFContext.VODs'  is null.");
             }
-            var vOD = _context
+            var vOD = _context.VOD
                 .GetFirstOrDefault(m => m.VodId == id);
             if (vOD != null)
             {
-                _context.Remove(vOD);
+                _context.VOD.Remove(vOD);
             }
 
             _context.Save();
             return RedirectToAction(nameof(Index));
         }
-        
+
         private bool VODExists(int id)
         {
-            return _context.GetAll().Any(e => e.VodId == id);
+            return _context.VOD.GetAll().Any(e => e.VodId == id);
         }
-        
+
     }
 }

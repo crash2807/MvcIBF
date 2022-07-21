@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using MvcIBF.Data;
 using MvcIBF.Models;
 
-namespace MvcIBF.Controllers
+namespace MvcIBF.Areas.Admin.Controllers
 {
     public class MoviesController : Controller
     {
@@ -26,7 +26,7 @@ namespace MvcIBF.Controllers
                          select m;
             var vods = _context.Movies.Include(c => c.VODs);
 
-            if (!String.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
                 movies = movies.Where(s => s.MovieTitle!.Contains(searchString));
             }
@@ -157,15 +157,15 @@ namespace MvcIBF.Controllers
             {
                 _context.Movies.Remove(movie);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool MovieExists(int id)
         {
-          return (_context.Movies?.Any(e => e.MovieId == id)).GetValueOrDefault();
+            return (_context.Movies?.Any(e => e.MovieId == id)).GetValueOrDefault();
         }
-        
+
     }
 }

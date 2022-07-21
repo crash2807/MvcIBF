@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<MvcIBFContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MvcIBFContext") ?? throw new InvalidOperationException("Connection string 'MvcIBFContext' not found.")));
 
-builder.Services.AddScoped<IVODRepository, VODRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -38,6 +38,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{area=User}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
