@@ -4,6 +4,8 @@ using MvcIBF.Data;
 using MvcIBF.Models;
 using MvcIBF.Repository;
 using MvcIBF.Repository.IRepository;
+using AutoMapper;
+using MvcIBF.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<MvcIBFContext>(options =>
@@ -11,6 +13,12 @@ builder.Services.AddDbContext<MvcIBFContext>(options =>
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddControllersWithViews();
+var config = new AutoMapper.MapperConfiguration(cfg =>
+{
+    cfg.AddProfile(new Helper());
+});
+var mapper = config.CreateMapper();
+builder.Services.AddSingleton(mapper);
 
 var app = builder.Build();
 

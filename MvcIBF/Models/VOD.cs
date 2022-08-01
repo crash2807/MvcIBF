@@ -8,6 +8,6 @@ namespace MvcIBF.Models
         [Display(Name = "VOD")]
         [Required]
         public string? VodName { get; set; }
-        public ICollection<Movie>? Movies { get; set; }
+        public ICollection<Movie_VOD>? Movie_VODs { get; set; }
     }
 }

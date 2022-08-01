@@ -13,14 +13,20 @@ namespace MvcIBF.Data
             : base(options)
         {
         }
-
+        
         public DbSet<Movie>? Movies { get; set; }
         public DbSet<VOD>? VODs { get; set; }
+        public DbSet<Movie_VOD>? Movies_VODs { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Movie>().ToTable(nameof(Movie))
-                .HasMany(c => c.VODs)
-                .WithMany(i => i.Movies);
+            modelBuilder.Entity<Movie_VOD>().HasKey(o => new { o.MovieId, o.VODId });
+            modelBuilder.Entity<Movie_VOD>().HasOne(m => m.Movie)
+                .WithMany(mv => mv.Movie_VODs)
+                .HasForeignKey(mi => mi.MovieId);
+            modelBuilder.Entity<Movie_VOD>()
+               .HasOne(v => v.VOD)
+               .WithMany(mv => mv.Movie_VODs)
+               .HasForeignKey(vi => vi.VODId);
 
         }
     }
