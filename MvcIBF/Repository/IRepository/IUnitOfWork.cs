@@ -4,6 +4,8 @@
     {
         IVODRepository VOD { get; }
         IMovieRepository Movie { get; }
+
+        IMoodRepository Mood { get; }
         void Save();
     }
 }

@@ -19,6 +19,7 @@ namespace MvcIBF.Models
         [Display(Name = "Opis")]
         public string? MovieDescription { get; set; }
         public ICollection<Movie_VOD>? Movie_VODs { get; set; } = new List<Movie_VOD>();
+        public ICollection<Movie_Mood>? Movie_Moods { get; set; } = new List<Movie_Mood>();
 
     }
 }

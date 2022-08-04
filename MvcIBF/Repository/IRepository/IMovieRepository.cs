@@ -6,10 +6,10 @@ namespace MvcIBF.Repository.IRepository
     public interface IMovieRepository: IRepository<Movie>
     {
         void Update(Movie movie);
-        void AddMovieWithVOD(MovieVM vm);
+        void AddMovieWithProperties(MovieVM vm);
         MovieVM GetMovieVM(int id);
 
-        void AddVODs(MovieVM vm,Movie movie);
+        void AddProperties(MovieVM vm,Movie movie);
         Movie GetMovie(int id);
     }
 }

@@ -20,7 +20,7 @@ namespace MvcIBF.Repository
             _db.Update(movie);
         }
 
-        public void AddMovieWithVOD(MovieVM movieVM)
+        public void AddMovieWithProperties(MovieVM movieVM)
         {
             var movie = new Movie()
             {
@@ -51,7 +51,28 @@ namespace MvcIBF.Repository
             {
                 movie.Movie_VODs = null;
                 _db.SaveChanges();
-            }            
+            }
+            if (movieVM.SelectedMoods != null)
+            {
+                foreach (var id in movieVM.SelectedMoods)
+                {
+                    var movieMood = new Movie_Mood()
+                    {
+                        MovieId = movie.MovieId,
+                        MoodId = id
+                    };
+
+                    _db.Movie_Moods.Add(movieMood);
+                    movie.Movie_Moods.Add(movieMood);
+                    _db.SaveChanges();
+
+                }
+            }
+            else
+            {
+                movie.Movie_Moods = null;
+                _db.SaveChanges();
+            }
         }
 
         public MovieVM GetMovieVM(int id)
@@ -65,18 +86,18 @@ namespace MvcIBF.Repository
                 Runtime = m.Runtime,
                 VodNames = m.Movie_VODs.Select(n => n.VOD.VodName).ToList(),
                 SelectedVODs= m.Movie_VODs.Select(n => n.VOD.VodId).ToArray(),
+                MoodNames = m.Movie_Moods.Select(n => n.Mood.MoodName).ToList(),
+                SelectedMoods = m.Movie_Moods.Select(n => n.Mood.MoodId).ToArray()
                 
             }).FirstOrDefault();
             return movie;
         }
 
-        public void AddVODs(MovieVM vm, Movie movie)
+        public void AddProperties(MovieVM vm, Movie movie)
         {
             
             if (vm.SelectedVODs != null)
-            {
-                    //var movie = _db.Movies;
-                    
+            {                    
                 var selectedVODs = vm.SelectedVODs;
                 var existingVODs = movie.Movie_VODs.Select(x => x.VODId).Where(x=> movie.MovieId==vm.MovieId);
                 var toAdd = selectedVODs.Except(existingVODs);
@@ -84,11 +105,7 @@ namespace MvcIBF.Repository
                 foreach(var id in toRemove)
                 {
                     var m = _db.Movies_VODs.First(x => x.MovieId==vm.MovieId && x.VODId==id);
-                    //var movieVOD = new Movie_VOD()
-                    //{
-                    //    MovieId = vm.MovieId,
-                    //    VODId = id
-                    //};
+                    
                     _db.Movies_VODs.Remove(m);
                     _db.SaveChanges();
                 }
@@ -104,9 +121,35 @@ namespace MvcIBF.Repository
                 }
             }
             else
+            {                 
+                _db.SaveChanges();
+            }
+            if (vm.SelectedMoods != null)
             {
-                
-                //movie.Movie_VODs = null;
+                var selectedMoods = vm.SelectedMoods;
+                var existingMoods = movie.Movie_Moods.Select(x => x.MoodId).Where(x => movie.MovieId == vm.MovieId);
+                var toAdd = selectedMoods.Except(existingMoods);
+                var toRemove = existingMoods.Except(selectedMoods);
+                foreach (var id in toRemove)
+                {
+                    var m = _db.Movie_Moods.First(x => x.MovieId == vm.MovieId && x.MoodId == id);
+
+                    _db.Movie_Moods.Remove(m);
+                    _db.SaveChanges();
+                }
+                foreach (var id in toAdd)
+                {
+                    var movieMood = new Movie_Mood()
+                    {
+                        MovieId = vm.MovieId,
+                        MoodId = id
+                    };
+                    _db.Movie_Moods.Add(movieMood);
+                    _db.SaveChanges();
+                }
+            }
+            else
+            {
                 _db.SaveChanges();
             }
         }
@@ -119,7 +162,8 @@ namespace MvcIBF.Repository
                 MovieDescription = m.MovieDescription,
                 ReleaseDate = m.ReleaseDate,
                 Runtime = m.Runtime,
-                Movie_VODs = m.Movie_VODs
+                Movie_VODs = m.Movie_VODs,
+                Movie_Moods= m.Movie_Moods
 
             }).FirstOrDefault();
             return movie;

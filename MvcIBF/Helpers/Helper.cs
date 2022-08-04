@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MvcIBF.Models;
 using MvcIBF.Models.ViewModels;
+using MvcIBF.Models.ViewModels.MoodVM;
 using MvcIBF.Models.ViewModels.MovieVM;
 
 namespace MvcIBF.Helpers
@@ -14,6 +15,9 @@ namespace MvcIBF.Helpers
             CreateMap<VOD, VODVM>();
             CreateMap<CreateVODVM, VOD>();
             CreateMap<VODVM, VOD>();
+            CreateMap<Mood, MoodVM>();
+            CreateMap<MoodVM, Mood>();
+            CreateMap<CreateMoodVM, Mood>();
         }
     }
 }

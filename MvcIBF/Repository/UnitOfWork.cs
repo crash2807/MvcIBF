@@ -12,9 +12,12 @@ namespace MvcIBF.Repository
             _db = db;
             VOD = new VODRepository(_db);
             Movie = new MovieRepository(_db);
+            Mood = new MoodRepository(_db);
         }
         public IVODRepository VOD { get; private set; }
         public IMovieRepository Movie { get; private set; }
+
+        public IMoodRepository Mood { get; private set; }
 
         public void Save()
         {

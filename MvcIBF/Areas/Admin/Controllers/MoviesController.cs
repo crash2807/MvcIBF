@@ -28,13 +28,14 @@ namespace MvcIBF.Areas.Admin.Controllers
         public async Task<IActionResult> Index(string searchString)
         {
             var movies = _context.Movie.GetAll();
-            //var vods = _context.Movie//.Include(c => c.VODs)
-                                      ;
-            var vm = _mapper.Map<List<MovieVM>>(movies);
+            //var vods = _context.Movie//.Include(c => c.VODs) ;
+
+            
             if (!string.IsNullOrEmpty(searchString))
             {
                 movies = movies.Where(s => s.MovieTitle!.Contains(searchString));
             }
+            var vm = _mapper.Map<List<MovieVM>>(movies);
 
             return View(vm);
         }
@@ -67,14 +68,21 @@ namespace MvcIBF.Areas.Admin.Controllers
         public IActionResult Create()
         {
             var vods = _context.VOD.GetAll();
-            var selectList = new List<SelectListItem>();
+            var selectListVods = new List<SelectListItem>();
             foreach (var item in vods)
             {
-                selectList.Add(new SelectListItem(item.VodName, item.VodId.ToString()));
+                selectListVods.Add(new SelectListItem(item.VodName, item.VodId.ToString()));
+            }
+            var moods = _context.Mood.GetAll();
+            var selectListMoods = new List<SelectListItem>();
+            foreach (var item in moods)
+            {
+                selectListMoods.Add(new SelectListItem(item.MoodName, item.MoodId.ToString()));
             }
             var vm = new MovieVM
             {
-                VODsList = selectList
+                VODsList = selectListVods,
+                MoodsList = selectListMoods
             };
             return View(vm);
         }
@@ -88,7 +96,7 @@ namespace MvcIBF.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Movie.AddMovieWithVOD(vm);
+                _context.Movie.AddMovieWithProperties(vm);
                 var model = _mapper.Map<Movie>(vm);
                 
                 _context.Save();
@@ -111,12 +119,20 @@ namespace MvcIBF.Areas.Admin.Controllers
             {
                 selectList.Add(new SelectListItem(item.VodName, item.VodId.ToString()));
             }
+            var moods = _context.Mood.GetAll();
+            var selectListMoods = new List<SelectListItem>();
+            foreach (var item in moods)
+            {
+                selectListMoods.Add(new SelectListItem(item.MoodName, item.MoodId.ToString()));
+            }
             var vm = new MovieVM
             {
-                VODsList = selectList
+                VODsList = selectList,
+                MoodsList = selectListMoods
             };
             var movie = _context.Movie.GetMovieVM(id);
             movie.VODsList = selectList;
+            movie.MoodsList = selectListMoods;
             vm  = _mapper.Map<MovieVM>(movie);
 
             if (movie == null)
@@ -142,13 +158,9 @@ namespace MvcIBF.Areas.Admin.Controllers
             {
                 try
                 {
-                    var m = _context.Movie.GetMovie(id);
-                    var selectedVODs = movie.SelectedVODs;
-                    var existingVODs = m.Movie_VODs.Select(x => x.VODId).ToList();
-                    var toAdd = selectedVODs.Except(existingVODs).ToList();
-                    var toRemove = existingVODs.Except(selectedVODs).ToList();
+                    var m = _context.Movie.GetMovie(id);                    
                     var vm = _mapper.Map<Movie>(movie);
-                    _context.Movie.AddVODs(movie,m);
+                    _context.Movie.AddProperties(movie,m);
                     
                     
                     _context.Movie.Update(vm);

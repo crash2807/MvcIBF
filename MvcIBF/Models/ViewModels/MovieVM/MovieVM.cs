@@ -22,7 +22,14 @@ namespace MvcIBF.Models.ViewModels.MovieVM
         public IEnumerable<SelectListItem>? VODsList { get; set; }
 
         public int[]? SelectedVODs { get; set; }
+        [Display(Name = "VOD")]
 
         public List<string>? VodNames { get; set; }
+        public IEnumerable<SelectListItem>? MoodsList { get; set; }
+
+        public int[]? SelectedMoods { get; set; }
+        [Display(Name = "Nastroje")]
+
+        public List<string>? MoodNames { get; set; }
     }
 }
