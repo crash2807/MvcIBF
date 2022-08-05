@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using MvcIBF.Models;
 using MvcIBF.Models.ViewModels;
+using MvcIBF.Models.ViewModels.CountryVM;
+using MvcIBF.Models.ViewModels.GenreVM;
 using MvcIBF.Models.ViewModels.MoodVM;
 using MvcIBF.Models.ViewModels.MovieVM;
 
@@ -18,6 +20,12 @@ namespace MvcIBF.Helpers
             CreateMap<Mood, MoodVM>();
             CreateMap<MoodVM, Mood>();
             CreateMap<CreateMoodVM, Mood>();
+            CreateMap<Genre, GenreVM>();
+            CreateMap<GenreVM, Genre>();
+            CreateMap<CreateGenreVM, Genre>();
+            CreateMap<Country, CountryVM>();
+            CreateMap<CountryVM, Country>();
+            CreateMap<CreateCountryVM, Country>();
         }
     }
 }

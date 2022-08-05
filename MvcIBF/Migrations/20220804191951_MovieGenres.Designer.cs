@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MvcIBF.Data;
 
@@ -11,9 +12,10 @@ using MvcIBF.Data;
 namespace MvcIBF.Migrations
 {
     [DbContext(typeof(MvcIBFContext))]
-    partial class MvcIBFContextModelSnapshot : ModelSnapshot
+    [Migration("20220804191951_MovieGenres")]
+    partial class MovieGenres
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,26 +23,6 @@ namespace MvcIBF.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("MvcIBF.Models.Country", b =>
-                {
-                    b.Property<int>("CountryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CountryId"), 1L, 1);
-
-                    b.Property<string>("CountryName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("CountryId");
-
-                    b.HasIndex("CountryName")
-                        .IsUnique();
-
-                    b.ToTable("Countries");
-                });
 
             modelBuilder.Entity("MvcIBF.Models.Genre", b =>
                 {
@@ -109,21 +91,6 @@ namespace MvcIBF.Migrations
                     b.ToTable("Movies");
                 });
 
-            modelBuilder.Entity("MvcIBF.Models.Movie_Country", b =>
-                {
-                    b.Property<int>("MovieId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CountryId")
-                        .HasColumnType("int");
-
-                    b.HasKey("MovieId", "CountryId");
-
-                    b.HasIndex("CountryId");
-
-                    b.ToTable("Movie_Countries");
-                });
-
             modelBuilder.Entity("MvcIBF.Models.Movie_Genre", b =>
                 {
                     b.Property<int>("MovieId")
@@ -189,25 +156,6 @@ namespace MvcIBF.Migrations
                     b.ToTable("VODs");
                 });
 
-            modelBuilder.Entity("MvcIBF.Models.Movie_Country", b =>
-                {
-                    b.HasOne("MvcIBF.Models.Country", "Country")
-                        .WithMany("Movie_Countries")
-                        .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MvcIBF.Models.Movie", "Movie")
-                        .WithMany("Movie_Countries")
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Country");
-
-                    b.Navigation("Movie");
-                });
-
             modelBuilder.Entity("MvcIBF.Models.Movie_Genre", b =>
                 {
                     b.HasOne("MvcIBF.Models.Genre", "Genre")
@@ -265,11 +213,6 @@ namespace MvcIBF.Migrations
                     b.Navigation("VOD");
                 });
 
-            modelBuilder.Entity("MvcIBF.Models.Country", b =>
-                {
-                    b.Navigation("Movie_Countries");
-                });
-
             modelBuilder.Entity("MvcIBF.Models.Genre", b =>
                 {
                     b.Navigation("Movie_Genres");
@@ -282,8 +225,6 @@ namespace MvcIBF.Migrations
 
             modelBuilder.Entity("MvcIBF.Models.Movie", b =>
                 {
-                    b.Navigation("Movie_Countries");
-
                     b.Navigation("Movie_Genres");
 
                     b.Navigation("Movie_Moods");

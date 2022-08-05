@@ -73,6 +73,48 @@ namespace MvcIBF.Repository
                 movie.Movie_Moods = null;
                 _db.SaveChanges();
             }
+            if (movieVM.SelectedGenres != null)
+            {
+                foreach (var id in movieVM.SelectedGenres)
+                {
+                    var movieGenre = new Movie_Genre()
+                    {
+                        MovieId = movie.MovieId,
+                        GenreId = id
+                    };
+
+                    _db.Movie_Genres.Add(movieGenre);
+                    movie.Movie_Genres.Add(movieGenre);
+                    _db.SaveChanges();
+
+                }
+            }
+            else
+            {
+                movie.Movie_Genres = null;
+                _db.SaveChanges();
+            }
+            if (movieVM.SelectedCountries != null)
+            {
+                foreach (var id in movieVM.SelectedCountries)
+                {
+                    var movieCountry = new Movie_Country()
+                    {
+                        MovieId = movie.MovieId,
+                        CountryId = id
+                    };
+
+                    _db.Movie_Countries.Add(movieCountry);
+                    movie.Movie_Countries.Add(movieCountry);
+                    _db.SaveChanges();
+
+                }
+            }
+            else
+            {
+                movie.Movie_Countries = null;
+                _db.SaveChanges();
+            }
         }
 
         public MovieVM GetMovieVM(int id)
@@ -87,8 +129,12 @@ namespace MvcIBF.Repository
                 VodNames = m.Movie_VODs.Select(n => n.VOD.VodName).ToList(),
                 SelectedVODs= m.Movie_VODs.Select(n => n.VOD.VodId).ToArray(),
                 MoodNames = m.Movie_Moods.Select(n => n.Mood.MoodName).ToList(),
-                SelectedMoods = m.Movie_Moods.Select(n => n.Mood.MoodId).ToArray()
-                
+                SelectedMoods = m.Movie_Moods.Select(n => n.Mood.MoodId).ToArray(),
+                GenreNames = m.Movie_Genres.Select(n => n.Genre.GenreName).ToList(),
+                SelectedGenres = m.Movie_Genres.Select(n => n.Genre.GenreId).ToArray(),
+                CountryNames = m.Movie_Countries.Select(n => n.Country.CountryName).ToList(),
+                SelectedCountries = m.Movie_Countries.Select(n => n.Country.CountryId).ToArray()
+
             }).FirstOrDefault();
             return movie;
         }
@@ -152,6 +198,62 @@ namespace MvcIBF.Repository
             {
                 _db.SaveChanges();
             }
+            if (vm.SelectedGenres != null)
+            {
+                var selectedGenres = vm.SelectedGenres;
+                var existingGenres = movie.Movie_Genres.Select(x => x.GenreId).Where(x => movie.MovieId == vm.MovieId);
+                var toAdd = selectedGenres.Except(existingGenres);
+                var toRemove = existingGenres.Except(selectedGenres);
+                foreach (var id in toRemove)
+                {
+                    var m = _db.Movie_Genres.First(x => x.MovieId == vm.MovieId && x.GenreId == id);
+
+                    _db.Movie_Genres.Remove(m);
+                    _db.SaveChanges();
+                }
+                foreach (var id in toAdd)
+                {
+                    var movieGenre = new Movie_Genre()
+                    {
+                        MovieId = vm.MovieId,
+                        GenreId = id
+                    };
+                    _db.Movie_Genres.Add(movieGenre);
+                    _db.SaveChanges();
+                }
+            }
+            else
+            {
+                _db.SaveChanges();
+            }
+            if (vm.SelectedCountries != null)
+            {
+                var selectedCountries = vm.SelectedCountries;
+                var existingCountries = movie.Movie_Countries.Select(x => x.CountryId).Where(x => movie.MovieId == vm.MovieId);
+                var toAdd = selectedCountries.Except(existingCountries);
+                var toRemove = existingCountries.Except(selectedCountries);
+                foreach (var id in toRemove)
+                {
+                    var m = _db.Movie_Countries.First(x => x.MovieId == vm.MovieId && x.CountryId == id);
+
+                    _db.Movie_Countries.Remove(m);
+                    _db.SaveChanges();
+                }
+                foreach (var id in toAdd)
+                {
+                    var movieCountry = new Movie_Country()
+                    {
+                        MovieId = vm.MovieId,
+                        CountryId = id
+                    };
+                    _db.Movie_Countries.Add(movieCountry);
+                    _db.SaveChanges();
+                }
+            }
+            else
+            {
+                _db.SaveChanges();
+            }
         }
         public Movie GetMovie(int id)
         {
@@ -163,7 +265,9 @@ namespace MvcIBF.Repository
                 ReleaseDate = m.ReleaseDate,
                 Runtime = m.Runtime,
                 Movie_VODs = m.Movie_VODs,
-                Movie_Moods= m.Movie_Moods
+                Movie_Moods= m.Movie_Moods,
+                Movie_Genres= m.Movie_Genres,
+                Movie_Countries=m.Movie_Countries
 
             }).FirstOrDefault();
             return movie;

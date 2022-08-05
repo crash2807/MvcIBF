@@ -45,6 +45,18 @@
                 <option disabled selected>--Wybierz nastroje--</option>
                 </select>
             </div>
+             <div class="form-group">
+                <label asp-for="GenresList" class="control-label"></label>
+                <select asp-for="SelectedGenres" asp-items="Model.GenresList" class="form-control" multiple>
+                <option disabled selected>--Wybierz gatunki--</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="CountriesList" class="control-label"></label>
+                <select asp-for="SelectedCountries" asp-items="Model.CountriesList" class="form-control" multiple>
+                <option disabled selected>--Wybierz kraje produkcji--</option>
+                </select>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

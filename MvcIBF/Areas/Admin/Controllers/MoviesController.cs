@@ -79,10 +79,24 @@ namespace MvcIBF.Areas.Admin.Controllers
             {
                 selectListMoods.Add(new SelectListItem(item.MoodName, item.MoodId.ToString()));
             }
+            var genres = _context.Genre.GetAll();
+            var selectListGenres = new List<SelectListItem>();
+            foreach (var item in genres)
+            {
+                selectListGenres.Add(new SelectListItem(item.GenreName, item.GenreId.ToString()));
+            }
+            var countries = _context.Country.GetAll();
+            var selectListCountries = new List<SelectListItem>();
+            foreach (var item in countries)
+            {
+                selectListCountries.Add(new SelectListItem(item.CountryName, item.CountryId.ToString()));
+            }
             var vm = new MovieVM
             {
                 VODsList = selectListVods,
-                MoodsList = selectListMoods
+                MoodsList = selectListMoods,
+                GenresList = selectListGenres,
+                CountriesList = selectListCountries
             };
             return View(vm);
         }
@@ -125,14 +139,30 @@ namespace MvcIBF.Areas.Admin.Controllers
             {
                 selectListMoods.Add(new SelectListItem(item.MoodName, item.MoodId.ToString()));
             }
+            var genres = _context.Genre.GetAll();
+            var selectListGenres = new List<SelectListItem>();
+            foreach (var item in genres)
+            {
+                selectListGenres.Add(new SelectListItem(item.GenreName, item.GenreId.ToString()));
+            }
+            var countries = _context.Country.GetAll();
+            var selectListCountries = new List<SelectListItem>();
+            foreach (var item in countries)
+            {
+                selectListCountries.Add(new SelectListItem(item.CountryName, item.CountryId.ToString()));
+            }
             var vm = new MovieVM
             {
                 VODsList = selectList,
-                MoodsList = selectListMoods
+                MoodsList = selectListMoods,
+                GenresList = selectListGenres,
+                CountriesList = selectListCountries
             };
             var movie = _context.Movie.GetMovieVM(id);
             movie.VODsList = selectList;
             movie.MoodsList = selectListMoods;
+            movie.GenresList= selectListGenres;
+            movie.CountriesList = selectListCountries;
             vm  = _mapper.Map<MovieVM>(movie);
 
             if (movie == null)
