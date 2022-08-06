@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MvcIBF.Data;
 
@@ -11,9 +12,10 @@ using MvcIBF.Data;
 namespace MvcIBF.Migrations
 {
     [DbContext(typeof(MvcIBFContext))]
-    partial class MvcIBFContextModelSnapshot : ModelSnapshot
+    [Migration("20220805215424_Materials")]
+    partial class Materials
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

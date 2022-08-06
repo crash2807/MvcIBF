@@ -115,6 +115,28 @@ namespace MvcIBF.Repository
                 movie.Movie_Countries = null;
                 _db.SaveChanges();
             }
+            if(movieVM.InputURL != null)
+            {
+                var delimeter = ";";
+                movieVM.URLs = movieVM.InputURL.Split(delimeter).ToList();
+                foreach (var url in movieVM.URLs)
+                {
+                    var material = new Material()
+                    {
+                        MovieId=movie.MovieId,
+                        URL = url
+                    };
+                    _db.Materials.Add(material);
+                    movie.Materials.Add(material);
+                    
+                    _db.SaveChanges();
+                }
+            }
+            else
+            {
+                movie.Materials = null;
+                _db.SaveChanges();
+            }
         }
 
         public MovieVM GetMovieVM(int id)
@@ -133,7 +155,10 @@ namespace MvcIBF.Repository
                 GenreNames = m.Movie_Genres.Select(n => n.Genre.GenreName).ToList(),
                 SelectedGenres = m.Movie_Genres.Select(n => n.Genre.GenreId).ToArray(),
                 CountryNames = m.Movie_Countries.Select(n => n.Country.CountryName).ToList(),
-                SelectedCountries = m.Movie_Countries.Select(n => n.Country.CountryId).ToArray()
+                SelectedCountries = m.Movie_Countries.Select(n => n.Country.CountryId).ToArray(),
+                URLs=m.Materials.Select(n=>n.URL).ToList(),
+                
+                
 
             }).FirstOrDefault();
             return movie;
@@ -254,6 +279,40 @@ namespace MvcIBF.Repository
             {
                 _db.SaveChanges();
             }
+            if (vm.InputURL != null)
+            {
+                var newInput = vm.InputURL;
+                var urls = movie.Materials.Select(x => x.URL).Where(x => movie.MovieId == vm.MovieId);
+                var oldInput = String.Join(";", urls);
+                
+                var compare = newInput.CompareTo(oldInput);
+                if (compare != 0)
+                {
+                    var m = _db.Materials.Where(x => x.MovieId == vm.MovieId);
+                    _db.Materials.RemoveRange(m);
+                    if (newInput != null)
+                    {
+                        var delimeter = ";";
+                        vm.URLs = newInput.Split(delimeter).ToList();
+                        foreach (var url in vm.URLs)
+                        {
+                            var material = new Material()
+                            {
+                                MovieId = movie.MovieId,
+                                URL = url
+                            };
+                            _db.Materials.Add(material);
+                            movie.Materials.Add(material);
+
+                            _db.SaveChanges();
+                        }
+                    }
+                    else
+                    {
+                        _db.SaveChanges();
+                    }
+                }
+            }
         }
         public Movie GetMovie(int id)
         {
@@ -267,7 +326,8 @@ namespace MvcIBF.Repository
                 Movie_VODs = m.Movie_VODs,
                 Movie_Moods= m.Movie_Moods,
                 Movie_Genres= m.Movie_Genres,
-                Movie_Countries=m.Movie_Countries
+                Movie_Countries=m.Movie_Countries,
+                Materials=m.Materials
 
             }).FirstOrDefault();
             return movie;

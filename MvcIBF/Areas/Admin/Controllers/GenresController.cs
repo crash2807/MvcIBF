@@ -122,7 +122,7 @@ namespace MvcIBF.Areas.Admin.Controllers
         // GET: GenreController/Delete/5
         public ActionResult Delete(int id)
         {
-            if (id == null || _context.Genre.GetAll == null)
+            if ( _context.Genre.GetAll == null)
             {
                 return NotFound();
             }

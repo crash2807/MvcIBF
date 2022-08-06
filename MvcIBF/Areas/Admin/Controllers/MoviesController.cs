@@ -96,7 +96,9 @@ namespace MvcIBF.Areas.Admin.Controllers
                 VODsList = selectListVods,
                 MoodsList = selectListMoods,
                 GenresList = selectListGenres,
-                CountriesList = selectListCountries
+                CountriesList = selectListCountries,
+                URLs= new List<string>()
+                
             };
             return View(vm);
         }
@@ -110,6 +112,7 @@ namespace MvcIBF.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                
                 _context.Movie.AddMovieWithProperties(vm);
                 var model = _mapper.Map<Movie>(vm);
                 
@@ -151,18 +154,23 @@ namespace MvcIBF.Areas.Admin.Controllers
             {
                 selectListCountries.Add(new SelectListItem(item.CountryName, item.CountryId.ToString()));
             }
+            var urls = _context.Material.GetAll().Where(m => m.MovieId == id).Select(x=>x.URL);
+            var oldInput = String.Join(";", urls);
+            
             var vm = new MovieVM
             {
                 VODsList = selectList,
                 MoodsList = selectListMoods,
                 GenresList = selectListGenres,
-                CountriesList = selectListCountries
+                CountriesList = selectListCountries,
+                InputURL=oldInput
             };
             var movie = _context.Movie.GetMovieVM(id);
             movie.VODsList = selectList;
             movie.MoodsList = selectListMoods;
-            movie.GenresList= selectListGenres;
+            movie.GenresList = selectListGenres;
             movie.CountriesList = selectListCountries;
+            movie.InputURL = oldInput;
             vm  = _mapper.Map<MovieVM>(movie);
 
             if (movie == null)

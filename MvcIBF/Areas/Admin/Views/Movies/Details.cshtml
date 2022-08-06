@@ -9,7 +9,18 @@
 <div>
     <h4>Film</h4>
     <hr />
+    <div class="col-md-4">
+        @if (@Model.URLs!=null)
+        {
+            <img src="@Model.URLs.First()" width="100%" alt="@Model.MovieTitle">
+        }
+        else
+        {
+            <img src="https://protkd.com/wp-content/uploads/2017/04/default-image.jpg" width="100%" alt="@Model.MovieTitle">
+        }
+    </div>
     <dl class="row">
+        
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.MovieTitle)
         </dt>
@@ -92,6 +103,23 @@
              <dd class = "col-sm-10">Brak danych</dd>
         }
     </dl>
+    @if (Model.URLs != null)
+    {
+        @if (Model.URLs.Count() > 1)
+        {
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.URLs)
+            </dt>
+            <div class="col-md-4">
+                @foreach(var item in Model.URLs)
+                {
+                    <img src="@item" width="50%" alt="@Model.MovieTitle">
+                }
+
+            </div>
+        }
+
+    }
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.MovieId">Edytuj</a> |

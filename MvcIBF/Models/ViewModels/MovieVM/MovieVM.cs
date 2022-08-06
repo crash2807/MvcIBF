@@ -48,5 +48,10 @@ namespace MvcIBF.Models.ViewModels.MovieVM
         [Display(Name = "Kraj produkcji")]
 
         public List<string>? CountryNames { get; set; }
+        [Display(Name = "Linki do materiałów (oddzielone \";\")")]
+        public string InputURL { get; set; }
+        [Display(Name ="Lista materiałów")]
+        
+        public List<string>? URLs { get; set; }
     }
 }

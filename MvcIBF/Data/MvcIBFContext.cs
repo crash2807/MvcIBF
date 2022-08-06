@@ -23,6 +23,7 @@ namespace MvcIBF.Data
         public DbSet<Movie_Genre> Movie_Genres { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Movie_Country> Movie_Countries { get; set; }
+        public DbSet<Material> Materials { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // encja Movie_VOD

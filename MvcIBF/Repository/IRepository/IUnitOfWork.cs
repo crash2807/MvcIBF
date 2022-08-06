@@ -7,6 +7,7 @@
         IMoodRepository Mood { get; }
         IGenreRepository Genre { get; }
         ICountryRepository Country { get; }
+        IMaterialRepository Material { get; }
         void Save();
     }
 }

@@ -122,7 +122,7 @@ namespace MvcIBF.Areas.Admin.Controllers
         // GET: MoodController/Delete/5
         public ActionResult Delete(int id)
         {
-            if (id == null || _context.Mood.GetAll == null)
+            if ( _context.Mood.GetAll == null)
             {
                 return NotFound();
             }

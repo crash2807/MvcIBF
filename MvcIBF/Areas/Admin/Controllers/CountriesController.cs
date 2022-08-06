@@ -122,7 +122,7 @@ namespace MvcIBF.Areas.Admin.Controllers
         // GET: CountryController/Delete/5
         public ActionResult Delete(int id)
         {
-            if (id == null || _context.Country.GetAll == null)
+            if (_context.Country.GetAll == null)
             {
                 return NotFound();
             }
