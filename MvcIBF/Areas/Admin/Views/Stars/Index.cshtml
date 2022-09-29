@@ -1,0 +1,45 @@
+﻿@model IEnumerable<MvcIBF.Models.ViewModels.StarVM.StarVM>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Stwórz nowy element</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.ProfilePictureURL)</th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td class="align-middle">
+                <img class="rounded-circle" src="@item.ProfilePictureURL" alt="@item.LastName" style="max-width: 150px;max-height:150px" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+             <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.StarId">Edycja</a> |
+                <a asp-action="Details" asp-route-id="@item.StarId">Szczegóły</a> |
+                <a asp-action="Delete" asp-route-id="@item.StarId">Usuń</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

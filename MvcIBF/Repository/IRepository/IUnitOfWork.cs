@@ -8,6 +8,8 @@
         IGenreRepository Genre { get; }
         ICountryRepository Country { get; }
         IMaterialRepository Material { get; }
+        IFunctionRepository Function { get; }
+        IStarRepository Star { get; }
         void Save();
     }
 }

@@ -8,7 +8,6 @@ namespace MvcIBF.Models.ViewModels
         public int VodId { get; set; }
         [Display(Name = "VOD")]
         [Required]
-
         public string? VodName { get; set; }
         public IEnumerable<SelectListItem>? MoviesList { get; set; }
     }

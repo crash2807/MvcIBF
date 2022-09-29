@@ -91,13 +91,31 @@ namespace MvcIBF.Areas.Admin.Controllers
             {
                 selectListCountries.Add(new SelectListItem(item.CountryName, item.CountryId.ToString()));
             }
+            var functions = _context.Function.GetAll();
+            var stars = _context.Star.GetAll();
+            var selectListStars= new List<SelectListItem>();
+            foreach (var item in stars)
+            {
+                var fullname = item.FirstName + " " + item.LastName;
+                selectListStars.Add(new SelectListItem(fullname, item.StarId.ToString()));
+            }
+            var selectedStars = new List<int>();
+            var selectedStarsList = new List<List<int>>();
+            foreach (var item in functions)
+            {
+                
+                selectedStarsList.Add(selectedStars);
+            }
             var vm = new MovieVM
             {
                 VODsList = selectListVods,
                 MoodsList = selectListMoods,
                 GenresList = selectListGenres,
                 CountriesList = selectListCountries,
-                URLs= new List<string>()
+                URLs= new List<string>(),
+                Functions= functions,
+                StarsList= selectListStars,
+                SelectedStarsFunction= selectedStarsList
                 
             };
             return View(vm);

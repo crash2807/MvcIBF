@@ -24,6 +24,9 @@ namespace MvcIBF.Data
         public DbSet<Country> Countries { get; set; }
         public DbSet<Movie_Country> Movie_Countries { get; set; }
         public DbSet<Material> Materials { get; set; }
+        public DbSet<Function> Functions { get; set; }
+        public DbSet<Star> Stars { get; set; }
+        public DbSet<Movie_Star_Function> Movie_Stars_Functions { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // encja Movie_VOD
@@ -62,6 +65,17 @@ namespace MvcIBF.Data
                .HasOne(c => c.Country)
                .WithMany(mc => mc.Movie_Countries)
                .HasForeignKey(ci => ci.CountryId);
+            //encja Movie_Star_Function
+            modelBuilder.Entity<Movie_Star_Function>().HasKey(o => new { o.MovieId, o.StarId, o.FunctionId });
+            modelBuilder.Entity<Movie_Star_Function>().HasOne(m => m.Movie)
+                .WithMany(m => m.Movie_Stars_Functions)
+                .HasForeignKey(mi => mi.MovieId);
+            modelBuilder.Entity<Movie_Star_Function>().HasOne(s => s.Star)
+                .WithMany(m => m.Movie_Stars_Functions)
+                .HasForeignKey(si => si.StarId);
+            modelBuilder.Entity<Movie_Star_Function>().HasOne(f => f.Function)
+                .WithMany(m => m.Movie_Stars_Functions)
+                .HasForeignKey(fi => fi.FunctionId);
         }
     }
 }

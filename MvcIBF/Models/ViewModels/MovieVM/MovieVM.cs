@@ -43,15 +43,17 @@ namespace MvcIBF.Models.ViewModels.MovieVM
         public List<string>? GenreNames { get; set; }
         [Display(Name = "Kraj produkcji")]
         public IEnumerable<SelectListItem>? CountriesList { get; set; }
-
         public int[]? SelectedCountries { get; set; }
         [Display(Name = "Kraj produkcji")]
-
         public List<string>? CountryNames { get; set; }
         [Display(Name = "Linki do materiałów (oddzielone \";\")")]
         public string InputURL { get; set; }
-        [Display(Name ="Lista materiałów")]
-        
+        [Display(Name ="Lista materiałów")]        
         public List<string>? URLs { get; set; }
+        public IEnumerable<Function>? Functions { get; set; }
+        [Display(Name ="Gwiazdy")]
+        public IEnumerable<SelectListItem>? StarsList { get; set; }
+        public List<List<int>>? SelectedStarsFunction { get; set; }
+        public List<int>? SelectedFunction { get; set; }
     }
 }

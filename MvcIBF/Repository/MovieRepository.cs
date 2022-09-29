@@ -137,6 +137,14 @@ namespace MvcIBF.Repository
                 movie.Materials = null;
                 _db.SaveChanges();
             }
+            //if (movieVM.SelectedStarsFunction != null)
+            //{
+            //    var MovieStars = new Movie_Star_Function
+            //    {
+            //        MovieId= movie.MovieId,
+            //        FunctionId = movieVM.SelectedStarsFunction[],
+            //    }
+            //}
         }
 
         public MovieVM GetMovieVM(int id)
@@ -160,7 +168,7 @@ namespace MvcIBF.Repository
                 
                 
 
-            }).FirstOrDefault();
+            }).First();
             return movie;
         }
 
@@ -272,6 +280,7 @@ namespace MvcIBF.Repository
                         CountryId = id
                     };
                     _db.Movie_Countries.Add(movieCountry);
+                    
                     _db.SaveChanges();
                 }
             }
@@ -329,7 +338,7 @@ namespace MvcIBF.Repository
                 Movie_Countries=m.Movie_Countries,
                 Materials=m.Materials
 
-            }).FirstOrDefault();
+            }).First();
             return movie;
         }
     }

@@ -13,5 +13,7 @@ namespace MvcIBF.Models
         public string? CountryName { get; set; }
         public ICollection<Movie_Country>? Movie_Countries { get; set; }
 
+        public List<Star>? Stars { get; set; } = new List<Star>();
+
     }
 }

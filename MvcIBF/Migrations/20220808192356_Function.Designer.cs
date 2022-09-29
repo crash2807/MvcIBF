@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MvcIBF.Data;
 
@@ -11,9 +12,10 @@ using MvcIBF.Data;
 namespace MvcIBF.Migrations
 {
     [DbContext(typeof(MvcIBFContext))]
-    partial class MvcIBFContextModelSnapshot : ModelSnapshot
+    [Migration("20220808192356_Function")]
+    partial class Function
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -196,26 +198,6 @@ namespace MvcIBF.Migrations
                     b.ToTable("Movie_Moods");
                 });
 
-            modelBuilder.Entity("MvcIBF.Models.Movie_Star_Function", b =>
-                {
-                    b.Property<int>("MovieId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StarId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FunctionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("MovieId", "StarId", "FunctionId");
-
-                    b.HasIndex("FunctionId");
-
-                    b.HasIndex("StarId");
-
-                    b.ToTable("Movie_Stars_Functions");
-                });
-
             modelBuilder.Entity("MvcIBF.Models.Movie_VOD", b =>
                 {
                     b.Property<int>("MovieId")
@@ -357,33 +339,6 @@ namespace MvcIBF.Migrations
                     b.Navigation("Movie");
                 });
 
-            modelBuilder.Entity("MvcIBF.Models.Movie_Star_Function", b =>
-                {
-                    b.HasOne("MvcIBF.Models.Function", "Function")
-                        .WithMany("Movie_Stars_Functions")
-                        .HasForeignKey("FunctionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MvcIBF.Models.Movie", "Movie")
-                        .WithMany("Movie_Stars_Functions")
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MvcIBF.Models.Star", "Star")
-                        .WithMany("Movie_Stars_Functions")
-                        .HasForeignKey("StarId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Function");
-
-                    b.Navigation("Movie");
-
-                    b.Navigation("Star");
-                });
-
             modelBuilder.Entity("MvcIBF.Models.Movie_VOD", b =>
                 {
                     b.HasOne("MvcIBF.Models.Movie", "Movie")
@@ -421,11 +376,6 @@ namespace MvcIBF.Migrations
                     b.Navigation("Stars");
                 });
 
-            modelBuilder.Entity("MvcIBF.Models.Function", b =>
-                {
-                    b.Navigation("Movie_Stars_Functions");
-                });
-
             modelBuilder.Entity("MvcIBF.Models.Genre", b =>
                 {
                     b.Navigation("Movie_Genres");
@@ -446,14 +396,7 @@ namespace MvcIBF.Migrations
 
                     b.Navigation("Movie_Moods");
 
-                    b.Navigation("Movie_Stars_Functions");
-
                     b.Navigation("Movie_VODs");
-                });
-
-            modelBuilder.Entity("MvcIBF.Models.Star", b =>
-                {
-                    b.Navigation("Movie_Stars_Functions");
                 });
 
             modelBuilder.Entity("MvcIBF.Models.VOD", b =>

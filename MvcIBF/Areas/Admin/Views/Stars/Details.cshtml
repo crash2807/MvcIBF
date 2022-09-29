@@ -1,0 +1,71 @@
+﻿@model MvcIBF.Models.ViewModels.StarVM.StarVM
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Szczegóły</h1>
+
+<div>
+    <h4>Gwiazda</h4>
+    <hr />
+    <div class="col-md-4">
+        @if (@Model.ProfilePictureURL!=null)
+        {
+            <img class="border-info rounded-circle" src="@Model.ProfilePictureURL" style="max-height:auto " alt="@Model.LastName">
+        }
+        else
+        {
+            <img class="border-info rounded-circle" src="https://as2.ftcdn.net/v2/jpg/00/64/67/63/1000_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg" style="max-width: 150px" alt="@Model.LastName">
+        }
+    </div>
+    <dl class="row">
+        
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        @if (Model.OtherName != null)
+        {
+            <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.OtherName)
+            </dt>
+            <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.OtherName)
+            </dd>
+        }
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateOfBirth)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateOfBirth)
+        </dd>
+         @if (Model.DateOfDeath != null)
+        {
+            <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateOfDeath)
+            </dt>
+            <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateOfDeath)
+            </dd>
+        }
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CountryName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CountryName)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.StarId">Edycja</a> |
+    <a asp-action="Index">Wróć</a>
+</div>

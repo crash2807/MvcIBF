@@ -2,9 +2,11 @@
 using MvcIBF.Models;
 using MvcIBF.Models.ViewModels;
 using MvcIBF.Models.ViewModels.CountryVM;
+using MvcIBF.Models.ViewModels.FunctionVM;
 using MvcIBF.Models.ViewModels.GenreVM;
 using MvcIBF.Models.ViewModels.MoodVM;
 using MvcIBF.Models.ViewModels.MovieVM;
+using MvcIBF.Models.ViewModels.StarVM;
 
 namespace MvcIBF.Helpers
 {
@@ -26,6 +28,12 @@ namespace MvcIBF.Helpers
             CreateMap<Country, CountryVM>();
             CreateMap<CountryVM, Country>();
             CreateMap<CreateCountryVM, Country>();
+            CreateMap<Star, StarVM>();
+            CreateMap<StarVM, Star>();
+            CreateMap<CreateStarVM, Star>();
+            CreateMap<Function, FunctionVM>();
+            CreateMap<FunctionVM, Function>();
+            CreateMap<CreateFunctionVM, Function>();
         }
     }
 }
