@@ -61,7 +61,24 @@
                 <input asp-for="InputURL" class="form-control" />
                 <span asp-validation-for="InputURL" class="text-danger"></span>
             </div>
-            @foreach (var item in Model.Functions)
+            <form method="post">
+    
+                <select id="IdStar" name="IdStar">
+                    @foreach(var item in Model.Stars)
+                    {
+                        <option value="@item.IdStar">@item.LastName</option>
+                    }
+                </select>
+                <select id="IdFunction" name="IdFunction">
+                    @foreach (var item in Model.Functions)
+                    {
+                        <option value="@item.IdFunction">@item.Name</option>
+                    }
+                </select>
+
+                <button type="submit">Add</button>
+            </form>
+           @* @foreach (var item in Model.Functions)
             {
             <div class="form-group">
                 <label asp-for="Functions" class="control-label">@item.FunctionName</label>
@@ -75,7 +92,7 @@
             }
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
+            </div>*@
              
         </form>
     </div>

@@ -4,6 +4,7 @@ using System.Diagnostics;
 
 namespace MvcIBF.Controllers
 {
+    [Area("User")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

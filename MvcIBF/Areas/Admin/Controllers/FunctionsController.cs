@@ -8,6 +8,7 @@ using MvcIBF.Repository.IRepository;
 
 namespace MvcIBF.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class FunctionsController : Controller
     {
         private readonly IUnitOfWork _context;

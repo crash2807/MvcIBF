@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MvcIBF.Models;
 
 namespace MvcIBF.Data
 {
-    public class MvcIBFContext : DbContext
+    public class MvcIBFContext : IdentityDbContext
     {
         public MvcIBFContext (DbContextOptions<MvcIBFContext> options)
             : base(options)
@@ -27,8 +28,10 @@ namespace MvcIBF.Data
         public DbSet<Function> Functions { get; set; }
         public DbSet<Star> Stars { get; set; }
         public DbSet<Movie_Star_Function> Movie_Stars_Functions { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             // encja Movie_VOD
             modelBuilder.Entity<Movie_VOD>().HasKey(o => new { o.MovieId, o.VODId });
             modelBuilder.Entity<Movie_VOD>().HasOne(m => m.Movie)

@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MvcIBF.Data;
 using MvcIBF.Models;
@@ -6,12 +6,18 @@ using MvcIBF.Repository;
 using MvcIBF.Repository.IRepository;
 using AutoMapper;
 using MvcIBF.Helpers;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<MvcIBFContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MvcIBFContext") ?? throw new InvalidOperationException("Connection string 'MvcIBFContext' not found.")));
 
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddDefaultTokenProviders()
+    .AddEntityFrameworkStores<MvcIBFContext>();
+builder.Services.AddRazorPages();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddSingleton<IEmailSender, EmailSender>();
 builder.Services.AddControllersWithViews();
 var config = new AutoMapper.MapperConfiguration(cfg =>
 {
@@ -41,9 +47,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();;
 
 app.UseAuthorization();
-
+app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
     pattern: "{area=User}/{controller=Home}/{action=Index}/{id?}");

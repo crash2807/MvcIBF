@@ -13,6 +13,7 @@ using MvcIBF.Repository.IRepository;
 
 namespace MvcIBF.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class MoviesController : Controller
     {
         private readonly IUnitOfWork _context;

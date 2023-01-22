@@ -9,6 +9,7 @@ using MvcIBF.Repository.IRepository;
 
 namespace MvcIBF.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class StarsController : Controller
     {
         private readonly IUnitOfWork _context;
