@@ -52,7 +52,7 @@ namespace MvcIBF.Models.ViewModels.MovieVM
         public List<string>? URLs { get; set; }
         public IEnumerable<Function>? Functions { get; set; }
         [Display(Name ="Gwiazdy")]
-        public IEnumerable<SelectListItem>? StarsList { get; set; }
+        public IEnumerable<Star>? StarsList { get; set; }
         public List<List<int>>? SelectedStarsFunction { get; set; }
         public List<int>? SelectedFunction { get; set; }
     }

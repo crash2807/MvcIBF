@@ -184,5 +184,86 @@ namespace MvcIBF.Areas.Admin.Controllers
         {
             return _context.Star.GetAll().Any(e => e.StarId == id);
         }
+        // GET: StarController/AddMovies/5
+        public ActionResult AddMovies(int id)
+        {
+            var star = _context.Star
+                        .GetStarVM(id);
+            var functions = _context.Function.GetAll();
+            var movies = _context.Movie.GetAll();
+            star.FunctionsList = functions;
+            star.MoviesList = movies;
+            return View(star);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddMovies(int id, StarVM star)
+        {
+            if (id != star.StarId)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var s = _context.Star.GetStar(id);
+                    var vm = _mapper.Map<Star>(star);
+                    _context.Star.AddMovies(star, s);
+                    //_context.Star.Update(vm);
+                    _context.Save();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!StarExists(star.StarId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(star);
+        }
+
+        // GET: StarController/DeleteMovies/5
+        public ActionResult DeleteMovies(int id)
+        {
+            if (_context.Star.GetAll == null)
+            {
+                return NotFound();
+            }
+
+            var star = _context.Star
+                .GetStarVM(id);
+            if (star == null)
+            {
+                return NotFound();
+            }
+
+            return View(star);
+        }
+        [HttpPost, ActionName("DeleteMovies")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteMoviesConfirmed(int StarId, int MovieId, int FunctionId)
+        {
+            if (_context.Star.GetAll == null)
+            {
+                return Problem("Entity set 'MvcIBFContext.Stars'  is null.");
+            }
+            var star = _context.Star
+                .GetFirstOrDefault(m => m.StarId == StarId);
+            //if (star != null)
+            //{
+            //    _context.Star.Remove(star);
+            //}
+            var movie = _context.Movie.GetFirstOrDefault(m => m.MovieId == MovieId);
+            var function = _context.Function.GetFirstOrDefault(m => m.FunctionId == FunctionId);
+            _context.Star.DeleteMovies(star,movie,function);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

@@ -323,7 +323,7 @@ namespace MvcIBF.Repository
                 }
             }
         }
-        public Movie GetMovie(int id)
+        public Movie    GetMovie(int id)
         {
             Movie movie = _db.Movies.Where(x => x.MovieId == id).Select(m => new Movie()
             {

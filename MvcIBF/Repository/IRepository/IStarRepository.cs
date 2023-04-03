@@ -8,8 +8,10 @@ namespace MvcIBF.Repository.IRepository
         void Update(Star star);
         void AddStarWithCountry(CreateStarVM vm);
         void AddProperties(StarVM vm, Star star);
+        void AddMovies(StarVM vm, Star star);
 
         StarVM GetStarVM(int id);
         Star GetStar(int id);
+        void DeleteMovies(Star star, Movie movie, Function function);
     }
 }

@@ -94,11 +94,11 @@ namespace MvcIBF.Areas.Admin.Controllers
             }
             var functions = _context.Function.GetAll();
             var stars = _context.Star.GetAll();
-            var selectListStars= new List<SelectListItem>();
+            var selectListStars= new List<Star>();
             foreach (var item in stars)
             {
                 var fullname = item.FirstName + " " + item.LastName;
-                selectListStars.Add(new SelectListItem(fullname, item.StarId.ToString()));
+               // selectListStars.Add(new SelectListItem(fullname, item.StarId.ToString()));
             }
             var selectedStars = new List<int>();
             var selectedStarsList = new List<List<int>>();
@@ -115,7 +115,7 @@ namespace MvcIBF.Areas.Admin.Controllers
                 CountriesList = selectListCountries,
                 URLs= new List<string>(),
                 Functions= functions,
-                StarsList= selectListStars,
+                StarsList= stars,
                 SelectedStarsFunction= selectedStarsList
                 
             };

@@ -25,6 +25,7 @@ namespace MvcIBF.Models
         [Display(Name ="Kraj pochodzenia")]
         public Country Country { get; set; }
         public int CountryId { get; set; }
+        [Display(Name = "Filmografia")]
         public ICollection<Movie_Star_Function> Movie_Stars_Functions { get; set; } = new List<Movie_Star_Function>();
 
     }

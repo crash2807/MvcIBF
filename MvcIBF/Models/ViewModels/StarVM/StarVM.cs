@@ -28,5 +28,13 @@ namespace MvcIBF.Models.ViewModels.StarVM
         [Display(Name = "Kraj pochodzenia")]
         public IEnumerable<SelectListItem>? CountriesList { get; set; }
         public int? SelectedCountry { get; set; }
+        [Display(Name = "Funkcja")]
+        public IEnumerable<Function>? FunctionsList { get; set; }
+        public int? SelectedFunction { get; set; }
+        [Display(Name = "Film")]
+        public IEnumerable<Movie>? MoviesList { get; set; }
+        public int? SelectedMovie { get; set; }
+        [Display(Name = "Filmografia")]
+        public IEnumerable<Movie_Star_Function>? MoviesFunctionsList { get; set; }
     }
 }

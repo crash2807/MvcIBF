@@ -1,0 +1,47 @@
+﻿@model MvcIBF.Models.ViewModels.StarVM.StarVM
+
+@{
+    ViewData["Title"] = "Dodaj filmy";
+}
+
+<h1>Dodaj filmy</h1>
+
+<h4></h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddMovies">            
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="StarId" />
+            <input type="hidden" asp-for="FirstName" />
+            <input type="hidden" asp-for="LastName" />
+            <input type="hidden" asp-for="DateOfBirth" />
+            <div class="form-group">
+                <select id="MovieId" name="SelectedMovie">
+                    @foreach (var item in Model.MoviesList)
+                    {
+                        <option value="@item.MovieId">@item.MovieTitle</option>
+                    }
+                </select>
+                <select id="FunctionId" name="SelectedFunction">
+                    @foreach (var item in Model.FunctionsList)
+                    {
+                        <option value="@item.FunctionId">@item.FunctionName</option>
+                    }
+                </select>
+                <div class="form-group">
+                    <input type="submit" value="Dodaj" class="btn btn-primary" />
+                </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Wróć</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
