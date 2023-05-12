@@ -1,0 +1,231 @@
+﻿@model MvcIBF.Models.ViewModels.MovieVM.MovieVM
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Szczegóły</h1>
+
+<div>
+    <h4>Film</h4>
+    <hr />
+    <div class="col-md-4">
+        @if (@Model.URLs.Count() != 0)
+        {
+            <img src="@Model.URLs.First()" width="100%" alt="@Model.MovieTitle">
+        }
+        else
+        {
+            <img src="https://protkd.com/wp-content/uploads/2017/04/default-image.jpg" width="100%" alt="@Model.MovieTitle">
+        }
+    </div>
+    <div>
+        @if (@Model.AverageRating != 0)
+        {
+            <p>Średnia ocen: @Model.AverageRating</p>
+        }
+        else
+        {
+            <p>Brak ocen</p>
+        }
+    </div>
+    @*<div>
+        @if(@Model.Rating != 0)
+        {
+            <p>Twoja ocena: @Model.Rating</p>
+            <p>Twój komentarz do oceny: @Model.UserComment</p>
+        }
+        else
+        {
+            <p>Twoja ocena: Brak</p>
+        }
+    </div>
+    @if (User.Identity.IsAuthenticated)
+{
+    <h3>Oceń film:</h3>
+    <form asp-controller="Movies" asp-action="Details" method="post">
+        <input type="hidden" name="id" value="@Model.MovieId" />
+        <div>
+            <label for="ratingValue">Ocena:</label>
+            <select name="ratingValue" id="ratingValue">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+        </div>
+        <div>
+            <label for="comment">Kometarz:</label>
+            <textarea name="comment" id="comment"></textarea>
+        </div>
+        <button type="submit">Oceń</button>
+        @Html.AntiForgeryToken()
+    </form>*@
+}
+    <dl class="row">
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MovieTitle)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MovieTitle)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ReleaseDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ReleaseDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Runtime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Runtime)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MovieDescription)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MovieDescription)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.VodNames)
+        </dt>
+        @*<dd class = "col-sm-10">
+        @Html.DisplayFor(model => model.VodNames)
+        </dd>*@
+        @if (Model.VodNames.Count() != 0)
+        {
+            <dd class="col-sm-10">
+
+                @foreach (var item in Model.VodNames)
+                {
+                    @item
+
+                    <text>&nbsp;</text>
+
+                }
+            </dd>
+        }
+        else
+        {
+            <dd class="col-sm-10">Brak danych</dd>
+        }
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MoodNames)
+        </dt>
+        @if (Model.MoodNames.Count() != 0)
+        {
+            <dd class="col-sm-10">
+                @foreach (var item in Model.MoodNames)
+                {
+                    @item
+
+                    <text>&nbsp;</text>
+                }
+            </dd>
+        }
+        else
+        {
+            <dd class="col-sm-10">Brak danych</dd>
+        }
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.GenreNames)
+        </dt>
+        @if (Model.GenreNames.Count() != 0)
+        {
+            <dd class="col-sm-10">
+                @foreach (var item in Model.GenreNames)
+                {
+                    @item
+
+                    <text>&nbsp;</text>
+                }
+            </dd>
+        }
+        else
+        {
+            <dd class="col-sm-10">Brak danych</dd>
+        }
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CountryNames)
+        </dt>
+        @if (Model.CountryNames.Count() != 0)
+        {
+            <dd class="col-sm-10">
+                @foreach (var item in Model.CountryNames)
+                {
+                    @item
+
+                    <text>&nbsp;</text>
+                }
+            </dd>
+        }
+        else
+        {
+            <dd class="col-sm-10">Brak danych</dd>
+        }
+    </dl>
+    @if (Model.URLs != null)
+    {
+        @if (Model.URLs.Count() > 1)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.URLs)
+            </dt>
+            <div class="col-md-4">
+                @foreach (var item in Model.URLs)
+                {
+                    <img src="@item" width="50%" alt="@Model.MovieTitle">
+                }
+
+            </div>
+        }
+        else if(Model.URLs.Count() != 0)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.URLs)
+            </dt>
+            <img src="@Model.URLs.First()" width="50%" alt="@Model.MovieTitle">
+        }
+
+    }
+    @if (Model.StarsFunctionsList.Count() != 0)
+    {
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StarsFunctionsList)
+        </dt>
+        <table>
+            <thead>
+                <tr>
+                    <th>Zdjęcie profilowe</th>
+                    <th></th>
+                    <th>Gwiazda</th>
+                    <th>Funkcja</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var Movie_Star_Function in Model.StarsFunctionsList)
+                {
+                    <tr>
+                        <td class="align-middle">
+                            <img class="rounded-circle" src="@Movie_Star_Function.Star.ProfilePictureURL" alt="@Movie_Star_Function.Star.LastName" style="max-width: 150px;max-height:150px" />
+                        </td>
+                        <td></td>
+                        <td>@Movie_Star_Function.Star.FirstName @Movie_Star_Function.Star.LastName</td>
+                        <td>@Movie_Star_Function.Function.FunctionName</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+<div>
+    <a asp-action="Index">Wróć</a>
+</div>

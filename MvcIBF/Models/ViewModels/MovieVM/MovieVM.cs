@@ -55,5 +55,12 @@ namespace MvcIBF.Models.ViewModels.MovieVM
         public IEnumerable<Star>? StarsList { get; set; }
         public List<List<int>>? SelectedStarsFunction { get; set; }
         public List<int>? SelectedFunction { get; set; }
+        [Display(Name = "Obsada i twórcy")]
+        public IEnumerable<Movie_Star_Function>? StarsFunctionsList { get; set; }
+        [Display(Name = "Ocena")]
+        public ICollection<Rating>? Ratings { get; set; }
+        public int Rating { get;  set; }
+        public double AverageRating { get;  set; }
+        public string UserComment { get;  set; }
     }
 }

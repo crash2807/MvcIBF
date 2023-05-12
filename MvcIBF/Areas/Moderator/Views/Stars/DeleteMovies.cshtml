@@ -1,0 +1,52 @@
+﻿@model MvcIBF.Models.ViewModels.StarVM.StarVM
+
+@{
+    ViewData["Title"] = "Usuń filmy";
+}
+
+<h1>Usuń filmy</h1>
+
+<h4></h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Film</th>
+                        <th></th>
+                        <th>Funkcja</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var Movie_Star_Function in Model.MoviesFunctionsList)
+                    {
+                        <tr>
+                            <td>@Movie_Star_Function.Movie.MovieTitle </td>
+                            <td></td>
+                            <td>@Movie_Star_Function.Function.FunctionName </td>
+                            <td>
+                                <form asp-action="DeleteMovies">
+                                    <input type="hidden" name="StarId" value="@Movie_Star_Function.StarId" />
+                                    <input type="hidden" name="MovieId" value="@Movie_Star_Function.MovieId" />
+                                    <input type="hidden" name="FunctionId" value="@Movie_Star_Function.FunctionId" />
+                                    <button type="submit">Usuń</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Wróć</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

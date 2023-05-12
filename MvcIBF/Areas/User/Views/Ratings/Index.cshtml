@@ -1,0 +1,53 @@
+﻿@model IEnumerable<MvcIBF.Models.Rating>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Plakat</th>
+            <th>
+                @Html.DisplayNameFor(model => model.Movie.MovieTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RatingValue)
+            </th>
+
+            <th>@Html.DisplayNameFor(model => model.Comment)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="align-middle">
+                    <img class="rounded-circle" src="@item.Movie.Materials.FirstOrDefault()" alt="@item.Movie.MovieTitle" style="max-width: 150px;max-height:150px" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Movie.MovieTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RatingValue)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comment)
+                </td>
+
+                <td>
+                    <a asp-action="Edit" asp-route-MovieId="@item.MovieId">Edytuj</a>
+                </td>
+                <td>
+                    <form asp-action="Delete" asp-route-MovieId="@item.MovieId" method="post" onsubmit="return confirm('Czy na pewno chcesz usunąć tę ocenę?')">
+                        <input type="hidden" name="__RequestVerificationToken" value="@Html.AntiForgeryToken()" />
+                        <button type="submit" class="btn btn-link">Usuń ocenę</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

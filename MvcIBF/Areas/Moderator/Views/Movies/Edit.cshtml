@@ -1,0 +1,79 @@
+﻿@model MvcIBF.Models.ViewModels.MovieVM.MovieVM
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edycja</h1>
+
+<h4>Film</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="MovieId" />
+            <div class="form-group">
+                <label asp-for="MovieTitle" class="control-label"></label>
+                <input asp-for="MovieTitle" class="form-control" />
+                <span asp-validation-for="MovieTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReleaseDate" class="control-label"></label>
+                <input asp-for="ReleaseDate" class="form-control" />
+                <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Runtime" class="control-label"></label>
+                <input asp-for="Runtime" class="form-control" />
+                <span asp-validation-for="Runtime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MovieDescription" class="control-label"></label>
+                <input asp-for="MovieDescription" class="form-control" />
+                <span asp-validation-for="MovieDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VODsList" class="control-label"></label>
+                <select asp-for="SelectedVODs" asp-items="Model.VODsList" class="form-control" multiple>
+                <option disabled selected>--Wybierz VODy--</option>
+                </select>
+             </div>
+             <div class="form-group">
+                <label asp-for="MoodsList" class="control-label"></label>
+                <select asp-for="SelectedMoods" asp-items="Model.MoodsList" class="form-control" multiple>
+                <option disabled selected>--Wybierz nastroje--</option>
+                </select>
+            </div>
+             <div class="form-group">
+                <label asp-for="GenresList" class="control-label"></label>
+                <select asp-for="SelectedGenres" asp-items="Model.GenresList" class="form-control" multiple>
+                <option disabled selected>--Wybierz gatunki--</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="CountriesList" class="control-label"></label>
+                <select asp-for="SelectedCountries" asp-items="Model.CountriesList" class="form-control" multiple>
+                <option disabled selected>--Wybierz kraje produkcji--</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="InputURL" class="control-label"></label>
+                <input asp-for="InputURL" class="form-control" />
+                <span asp-validation-for="InputURL" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+             
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Wróć</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -17,7 +17,7 @@ namespace MvcIBF.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.10")
+                .HasAnnotation("ProductVersion", "6.0.15")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -173,12 +173,10 @@ namespace MvcIBF.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -215,12 +213,10 @@ namespace MvcIBF.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -248,6 +244,36 @@ namespace MvcIBF.Migrations
                         .IsUnique();
 
                     b.ToTable("Countries");
+                });
+
+            modelBuilder.Entity("MvcIBF.Models.Friendship", b =>
+                {
+                    b.Property<int>("FriendshipId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FriendshipId"), 1L, 1);
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("User1Id")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("User2Id")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("FriendshipId");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("User1Id");
+
+                    b.HasIndex("User2Id");
+
+                    b.ToTable("Friendships");
                 });
 
             modelBuilder.Entity("MvcIBF.Models.Function", b =>
@@ -439,6 +465,27 @@ namespace MvcIBF.Migrations
                     b.ToTable("Movies_VODs");
                 });
 
+            modelBuilder.Entity("MvcIBF.Models.Rating", b =>
+                {
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RatingValue")
+                        .HasColumnType("int");
+
+                    b.HasKey("MovieId", "ApplicationUserId");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("Ratings");
+                });
+
             modelBuilder.Entity("MvcIBF.Models.Star", b =>
                 {
                     b.Property<int>("StarId")
@@ -558,6 +605,29 @@ namespace MvcIBF.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MvcIBF.Models.Friendship", b =>
+                {
+                    b.HasOne("MvcIBF.Models.ApplicationUser", null)
+                        .WithMany("Friendships")
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("MvcIBF.Models.ApplicationUser", "ApplicationUser1")
+                        .WithMany()
+                        .HasForeignKey("User1Id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("MvcIBF.Models.ApplicationUser", "ApplicationUser2")
+                        .WithMany()
+                        .HasForeignKey("User2Id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser1");
+
+                    b.Navigation("ApplicationUser2");
+                });
+
             modelBuilder.Entity("MvcIBF.Models.Material", b =>
                 {
                     b.HasOne("MvcIBF.Models.Movie", "Movie")
@@ -672,6 +742,25 @@ namespace MvcIBF.Migrations
                     b.Navigation("VOD");
                 });
 
+            modelBuilder.Entity("MvcIBF.Models.Rating", b =>
+                {
+                    b.HasOne("MvcIBF.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("Ratings")
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MvcIBF.Models.Movie", "Movie")
+                        .WithMany("Ratings")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Movie");
+                });
+
             modelBuilder.Entity("MvcIBF.Models.Star", b =>
                 {
                     b.HasOne("MvcIBF.Models.Country", "Country")
@@ -718,6 +807,8 @@ namespace MvcIBF.Migrations
                     b.Navigation("Movie_Stars_Functions");
 
                     b.Navigation("Movie_VODs");
+
+                    b.Navigation("Ratings");
                 });
 
             modelBuilder.Entity("MvcIBF.Models.Star", b =>
@@ -728,6 +819,13 @@ namespace MvcIBF.Migrations
             modelBuilder.Entity("MvcIBF.Models.VOD", b =>
                 {
                     b.Navigation("Movie_VODs");
+                });
+
+            modelBuilder.Entity("MvcIBF.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("Friendships");
+
+                    b.Navigation("Ratings");
                 });
 #pragma warning restore 612, 618
         }

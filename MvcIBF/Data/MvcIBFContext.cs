@@ -29,6 +29,8 @@ namespace MvcIBF.Data
         public DbSet<Star> Stars { get; set; }
         public DbSet<Movie_Star_Function> Movie_Stars_Functions { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<Rating> Ratings { get; set; }
+        public DbSet<Friendship> Friendships { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -79,6 +81,25 @@ namespace MvcIBF.Data
             modelBuilder.Entity<Movie_Star_Function>().HasOne(f => f.Function)
                 .WithMany(m => m.Movie_Stars_Functions)
                 .HasForeignKey(fi => fi.FunctionId);
+            //encja Rating
+            modelBuilder.Entity<Rating>().HasKey(o => new { o.MovieId, o.ApplicationUserId });
+            modelBuilder.Entity<Rating>().HasOne(m => m.Movie)
+                .WithMany(r => r.Ratings)
+                .HasForeignKey(mi => mi.MovieId);
+            modelBuilder.Entity<Rating>().HasOne(u=> u.ApplicationUser)
+                .WithMany(u=> u.Ratings)
+                .HasForeignKey(ui=> ui.ApplicationUserId);
+            //encja Friendship
+            modelBuilder.Entity<Friendship>().HasKey(o => new { o.FriendshipId });
+            modelBuilder.Entity<Friendship>().HasOne(u => u.ApplicationUser1)
+                .WithMany()
+                .HasForeignKey(u => u.User1Id)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Friendship>().HasOne(u => u.ApplicationUser2)
+                .WithMany()
+                .HasForeignKey(u=> u.User2Id)
+                .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }

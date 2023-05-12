@@ -1,0 +1,35 @@
+﻿@model MvcIBF.Models.ViewModels.MoodVM.MoodVM
+
+@{
+    ViewData["Title"] = "Edycja";
+}
+
+<h1>Edycja</h1>
+
+<h4>Nastrój</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="MoodId" />
+            <div class="form-group">
+                <label asp-for="MoodName" class="control-label"></label>
+                <input asp-for="MoodName" class="form-control" />
+                <span asp-validation-for="MoodName" class="text-danger"></span>
+            </div>
+             
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Wróć</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

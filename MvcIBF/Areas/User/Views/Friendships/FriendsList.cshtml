@@ -1,0 +1,50 @@
+﻿@model IEnumerable<MvcIBF.Models.ApplicationUser>
+
+@{
+    ViewBag.Title = "Znajomi";
+}
+<h1>Lista znajomych</h1>
+<form asp-controller="Friendships" asp-action="FriendsList">
+    <p>
+        Nazwa użytkownika: <input type="text" name="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProfilePictureUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.ProfilePictureUrl))
+                    {
+                        <img src="@item.ProfilePictureUrl" alt="Profile Picture" style="max-width: 10%; max-height: 10%;" />
+                    }
+                    else
+                    {
+                        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png" alt="Default Profile Picture" style="max-width: 10%; max-height: 10%;" />
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                 <td>
+                    <form asp-action="Delete" asp-route-FriendId="@item.Id" method="post" onsubmit="return confirm('Czy na pewno chcesz usunąć tego znajomego?')">
+                        <input type="hidden" name="__RequestVerificationToken" value="@Html.AntiForgeryToken()" />
+                        <button type="submit" class="btn btn-link">Usuń znajomego</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

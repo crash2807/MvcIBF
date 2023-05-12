@@ -10,6 +10,9 @@
         IMaterialRepository Material { get; }
         IFunctionRepository Function { get; }
         IStarRepository Star { get; }
+        IApplicationUserRepository ApplicationUser { get; }
+        IRatingRepository Rating { get; }
+        IFriendshipRepository Friendship { get; }
         void Save();
     }
 }

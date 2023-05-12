@@ -18,6 +18,9 @@ namespace MvcIBF.Repository
             Material = new MaterialRepository(_db);
             Star = new StarRepository(_db);
             Function = new FunctionRepository(_db);
+            ApplicationUser = new ApplicationUserRepository(_db);
+            Rating = new RatingRepository(_db);
+            Friendship = new FriendshipRepository(_db);
         }
         public IVODRepository VOD { get; private set; }
         public IMovieRepository Movie { get; private set; }
@@ -27,6 +30,10 @@ namespace MvcIBF.Repository
         public IMaterialRepository Material { get; private set; }
         public IStarRepository Star { get; private set; }
         public IFunctionRepository Function { get; private set; }
+        public IRatingRepository Rating { get; private set; }
+        public IApplicationUserRepository ApplicationUser { get; private set; }
+
+        public IFriendshipRepository Friendship {get; private set; }
 
         public void Save()
         {

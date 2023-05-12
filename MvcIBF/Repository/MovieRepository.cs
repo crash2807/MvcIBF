@@ -165,10 +165,48 @@ namespace MvcIBF.Repository
                 CountryNames = m.Movie_Countries.Select(n => n.Country.CountryName).ToList(),
                 SelectedCountries = m.Movie_Countries.Select(n => n.Country.CountryId).ToArray(),
                 URLs=m.Materials.Select(n=>n.URL).ToList(),
+                StarsFunctionsList=m.Movie_Stars_Functions.OrderBy(m => m.FunctionId).ToList()             
                 
                 
 
             }).First();
+            if (movie.StarsFunctionsList != null)
+            {
+                foreach (var Movie_Star_Function in movie.StarsFunctionsList)
+                {
+                    var StarId = Movie_Star_Function.StarId;
+                    Star star = _db.Stars.Where(x => x.StarId == StarId).Select(m => new Star()
+                    {
+                        FirstName = m.FirstName,
+                        LastName = m.LastName,
+                        ProfilePictureURL= m.ProfilePictureURL,
+                        OtherName = m.OtherName,
+                        StarId = StarId,
+                        Country = m.Country,
+                        DateOfBirth = m.DateOfBirth,
+                        DateOfDeath = m.DateOfDeath,
+                        CountryId = m.CountryId
+                    }).First();
+                    Movie_Star_Function.Star = star;
+                    var FunctionId = Movie_Star_Function.FunctionId;
+                    Function function = _db.Functions.Where(x => x.FunctionId == FunctionId).Select(f => new Function()
+                    {
+                        FunctionId = f.FunctionId,
+                        FunctionName = f.FunctionName
+                    }).First();
+                    Movie_Star_Function.Function = function;
+                }
+            }
+            var ratings = _db.Ratings.Where(r => r.MovieId == id);
+            if (ratings.Any())
+            {
+                movie.AverageRating = ratings.Average(r => r.RatingValue);
+            }
+            else
+            {
+                movie.AverageRating = 0;
+            }
+
             return movie;
         }
 

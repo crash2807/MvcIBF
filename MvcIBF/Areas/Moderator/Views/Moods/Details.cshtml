@@ -1,0 +1,25 @@
+﻿@model MvcIBF.Models.ViewModels.MoodVM.MoodVM
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Szczegóły</h1>
+
+<div>
+    <h4>Nastrój</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MoodName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MoodName)
+        </dd>
+
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.MoodId">Edycja</a> |
+    <a asp-action="Index">Wróć</a>
+</div>
