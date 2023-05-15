@@ -7,5 +7,6 @@ namespace MvcIBF.Repository.IRepository
         List<Rating> GetRatingsByMovieId(int id);
         void Update(Rating rating);
         List<Rating> GetRatingsByUserId(string userId);
+        Rating GetRatingByUserIdAndMovieId(string userId, int movieId);
     }
 }

@@ -21,7 +21,11 @@ namespace MvcIBF.Repository
         {
             return _db.Ratings.Where(r => r.ApplicationUserId == userId).ToList();
         }
-
+        public Rating GetRatingByUserIdAndMovieId(string userId, int movieId)
+        {
+            var rating =  _db.Ratings.Where(r => r.ApplicationUserId == userId && r.MovieId == movieId).FirstOrDefault();
+            return rating;
+        }
         public void Update(Rating rating)
         {
             _db.Update(rating);

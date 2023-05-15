@@ -122,6 +122,33 @@ namespace MvcIBF.Areas.User.Controllers
 
             return RedirectToAction("Details", new { id });
         }
+        public async Task<IActionResult> FriendsRating(int id)
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            var userId = claim.Value;
+            var currentUser = _context.ApplicationUser.GetById(userId);
+            var users = _context.ApplicationUser.GetAll();
+            var currentFriends = _context.Friendship.GetUserFriendsById(userId);
+            var ratings = new List<Rating>();
+            foreach(var friend in currentFriends)
+            {
+                var rating = _context.Rating.GetRatingByUserIdAndMovieId(friend.Id, id);
+                if (rating != null)
+                {
+                    ratings.Add(rating);
+                }
+            }
+            if (ratings.Count == 0 || ratings == null)
+            {
+                ModelState.AddModelError("", "Twoi znajomi nie ocenili tego filmu");
+                return View("EmptyFriendsRating");
+            }
+            else
+            {
+                return View(ratings);
+            }
+        }
         // GET: Movies/Create
         public IActionResult Create()
         {
