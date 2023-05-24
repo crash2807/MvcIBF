@@ -13,6 +13,7 @@
         IApplicationUserRepository ApplicationUser { get; }
         IRatingRepository Rating { get; }
         IFriendshipRepository Friendship { get; }
+        IRecommendationRepository Recommendation { get; }
         void Save();
     }
 }

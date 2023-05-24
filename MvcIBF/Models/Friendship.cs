@@ -10,6 +10,8 @@ namespace MvcIBF.Models
         public string User2Id { get; set; }
         public ApplicationUser ApplicationUser1 { get; set; }
         public ApplicationUser ApplicationUser2 { get; set; }
+        public ICollection<Movie_Friendship> Movie_Friendships { get; set; } = new List<Movie_Friendship>();
+
 
     }
 }

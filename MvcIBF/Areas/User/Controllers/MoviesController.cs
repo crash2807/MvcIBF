@@ -149,6 +149,66 @@ namespace MvcIBF.Areas.User.Controllers
                 return View(ratings);
             }
         }
+        public async Task<IActionResult> CreateRecommendation(int id)
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            var userId = claim.Value;
+            var currentUser = _context.ApplicationUser.GetById(userId);
+            var users = _context.ApplicationUser.GetAll();
+            var currentFriends = _context.Friendship.GetUserFriendsById(userId);
+            var unseenFriends = new List<ApplicationUser>();
+            
+            foreach (var friend in currentFriends)
+            {
+                var friendship = _context.Friendship.GetFriendshipById(userId, friend.Id);
+                var unseenFriendRating = _context.Rating.GetRatingByUserIdAndMovieId(friend.Id, id);
+                var alreadyRecommendedFriends = _context.ApplicationUser.GetUsersRecommendations(friendship.FriendshipId, id);
+                if (unseenFriendRating == null && alreadyRecommendedFriends ==null)
+                {
+                    unseenFriends.Add(friend);
+                }
+            }
+            if (unseenFriends.Count != 0 || unseenFriends != null)
+            {
+                ViewData["MovieId"] = id;
+                return View("ChooseFriend", unseenFriends);
+            }
+            else
+            {
+                return View("EmptyRecommendations");
+            }
+        }
+        [HttpPost]
+        public IActionResult Recommend(string friendId, int movieId, string? recommendation = null)
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            var userId = claim.Value;
+            var currentUser = _context.ApplicationUser.GetById(userId);
+            var friend = _context.ApplicationUser.GetById(friendId);
+            var friendship = _context.Friendship.GetFriendshipById(userId, friendId);
+            //var movie = _context.Movie.GetMovie(movieId);
+            //var entry = _context.Movie.CheckEntry(movie);
+            //if (!entry)
+            //{
+            //    _context.Movie.Attach(movie);
+            //}
+            var Recommendation = new Movie_Friendship
+            {
+                FriendshipId = friendship.FriendshipId,                
+                MovieId = movieId,
+                Recommendation = recommendation
+            };
+            Recommendation.Friendship = friendship;
+            //Recommendation.Movie = movie;
+            _context.Recommendation.Add(Recommendation);
+            friendship.Movie_Friendships.Add(Recommendation);
+            //movie.Movie_Friendships.Add(Recommendation);
+            
+            _context.Save();
+            return RedirectToAction("Index");
+        }
         // GET: Movies/Create
         public IActionResult Create()
         {
@@ -225,6 +285,7 @@ namespace MvcIBF.Areas.User.Controllers
             }
             return View(vm);
         }
+        
 
         //GET: Movies/Edit/5
         public async Task<IActionResult> Edit(int id)

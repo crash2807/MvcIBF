@@ -17,6 +17,23 @@ namespace MvcIBF.Repository
             return _db.ApplicationUsers.FirstOrDefault(u => u.Id == id);
         }
 
+        public ApplicationUser GetUsersRecommendations(int friendshipId, int movieId)
+        {
+            
+            var recommendation = _db.Movie_Friendships.Where(r=> r.FriendshipId== friendshipId && r.MovieId == movieId).FirstOrDefault();
+            if (recommendation != null)
+            {
+                var friendship = _db.Friendships.Where(r=> r.FriendshipId == friendshipId).First();
+                var friend = _db.ApplicationUsers.Where(r => r.Id == friendship.User2Id).First();
+                return friend;
+            }
+            else
+            {
+                return null;
+            }
+            
+        }
+
         public void Update(ApplicationUser user)
         {
             _db.Update(user);

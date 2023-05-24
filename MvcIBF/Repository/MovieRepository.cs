@@ -18,6 +18,7 @@ namespace MvcIBF.Repository
         public void Update(Movie movie)
         {
             _db.Update(movie);
+            
         }
 
         public void AddMovieWithProperties(MovieVM movieVM)
@@ -378,6 +379,16 @@ namespace MvcIBF.Repository
 
             }).First();
             return movie;
+        }
+
+        public bool CheckEntry(Movie movie)
+        {
+            return _db.Entry(movie).IsKeySet;
+        }
+
+        public void Attach(Movie movie)
+        {
+            _db.Attach(movie);
         }
     }
 }

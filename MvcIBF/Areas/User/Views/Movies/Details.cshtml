@@ -42,7 +42,12 @@
     </div>
     @if (User.Identity.IsAuthenticated)
 {
+    <div>
     <a asp-action="FriendsRating" asp-route-id="@Model.MovieId">Wyświetl oceny znajomych</a>
+    </div>
+    <div>
+    <a asp-action="CreateRecommendation" asp-route-id="@Model.MovieId">Zarekomenduj film znajomemu</a>
+    </div>
     <h3>Oceń film:</h3>
     <form asp-controller="Movies" asp-action="Details" method="post">
         <input type="hidden" name="id" value="@Model.MovieId" />

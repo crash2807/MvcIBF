@@ -24,8 +24,10 @@ namespace MvcIBF.Models
         public ICollection<Movie_Country>? Movie_Countries { get; set; } = new List<Movie_Country>();
         public ICollection<Movie_Star_Function> Movie_Stars_Functions { get; set; } = new List<Movie_Star_Function>();
         public ICollection<Rating> Ratings { get; set; } = new List<Rating>();
+        public ICollection<Movie_Friendship> Movie_Friendships { get; set; } = new List<Movie_Friendship>();
 
         public List<Material>? Materials { get; set; } = new List<Material>();
 
+        
     }
 }

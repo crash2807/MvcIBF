@@ -31,6 +31,7 @@ namespace MvcIBF.Data
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Rating> Ratings { get; set; }
         public DbSet<Friendship> Friendships { get; set; }
+        public DbSet<Movie_Friendship> Movie_Friendships { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -97,8 +98,16 @@ namespace MvcIBF.Data
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Friendship>().HasOne(u => u.ApplicationUser2)
                 .WithMany()
-                .HasForeignKey(u=> u.User2Id)
+                .HasForeignKey(u => u.User2Id)
                 .OnDelete(DeleteBehavior.Restrict);
+            //encja MovieFriendship 
+            modelBuilder.Entity<Movie_Friendship>().HasKey(o=> new {o.MovieId , o.FriendshipId});
+            modelBuilder.Entity<Movie_Friendship>().HasOne(m => m.Movie)
+                .WithMany(f => f.Movie_Friendships)
+                .HasForeignKey(mi => mi.MovieId);
+            modelBuilder.Entity<Movie_Friendship>().HasOne(f=> f.Friendship)
+                .WithMany(f=> f.Movie_Friendships)
+                .HasForeignKey(fi=> fi.FriendshipId);
 
         }
     }

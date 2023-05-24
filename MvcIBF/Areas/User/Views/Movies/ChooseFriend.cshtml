@@ -1,0 +1,21 @@
+﻿@model List<ApplicationUser>
+
+<h2>Wybierz znajomego</h2>
+
+<form method="post" asp-action="Recommend">
+    @foreach (var friend in Model)
+    {
+        <div>
+            <input type="radio" name="friendId" value="@friend.Id" /> @friend.UserName
+        </div>
+    }
+    <input type="hidden" name="movieId" value="@ViewData["MovieId"]" />
+    <div>
+        <label for="recommendation">Opis rekomendacji (opcjonalnie):</label>
+        <textarea id="recommendation" name="recommendation" rows="4" cols="50"></textarea>
+    </div>
+    <button type="submit">Zarekomenduj</button>
+</form>
+<div>
+    <a asp-action="Index">Wróć</a>
+</div>

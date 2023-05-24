@@ -11,5 +11,7 @@ namespace MvcIBF.Repository.IRepository
 
         void AddProperties(MovieVM vm,Movie movie);
         Movie GetMovie(int id);
+        bool CheckEntry(Movie movie);
+        void Attach(Movie movie);
     }
 }

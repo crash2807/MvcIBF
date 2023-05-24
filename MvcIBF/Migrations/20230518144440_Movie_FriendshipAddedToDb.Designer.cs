@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MvcIBF.Data;
 
@@ -11,9 +12,10 @@ using MvcIBF.Data;
 namespace MvcIBF.Migrations
 {
     [DbContext(typeof(MvcIBFContext))]
-    partial class MvcIBFContextModelSnapshot : ModelSnapshot
+    [Migration("20230518144440_Movie_FriendshipAddedToDb")]
+    partial class Movie_FriendshipAddedToDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -243,7 +245,7 @@ namespace MvcIBF.Migrations
                     b.HasIndex("CountryName")
                         .IsUnique();
 
-                    b.ToTable("Countries", (string)null);
+                    b.ToTable("Countries");
                 });
 
             modelBuilder.Entity("MvcIBF.Models.Friendship", b =>
@@ -273,7 +275,7 @@ namespace MvcIBF.Migrations
 
                     b.HasIndex("User2Id");
 
-                    b.ToTable("Friendships", (string)null);
+                    b.ToTable("Friendships");
                 });
 
             modelBuilder.Entity("MvcIBF.Models.Function", b =>
@@ -293,7 +295,7 @@ namespace MvcIBF.Migrations
                     b.HasIndex("FunctionName")
                         .IsUnique();
 
-                    b.ToTable("Functions", (string)null);
+                    b.ToTable("Functions");
                 });
 
             modelBuilder.Entity("MvcIBF.Models.Genre", b =>
@@ -313,7 +315,7 @@ namespace MvcIBF.Migrations
                     b.HasIndex("GenreName")
                         .IsUnique();
 
-                    b.ToTable("Genres", (string)null);
+                    b.ToTable("Genres");
                 });
 
             modelBuilder.Entity("MvcIBF.Models.Material", b =>
@@ -335,7 +337,7 @@ namespace MvcIBF.Migrations
 
                     b.HasIndex("MovieId");
 
-                    b.ToTable("Materials", (string)null);
+                    b.ToTable("Materials");
                 });
 
             modelBuilder.Entity("MvcIBF.Models.Mood", b =>
@@ -355,7 +357,7 @@ namespace MvcIBF.Migrations
                     b.HasIndex("MoodName")
                         .IsUnique();
 
-                    b.ToTable("Moods", (string)null);
+                    b.ToTable("Moods");
                 });
 
             modelBuilder.Entity("MvcIBF.Models.Movie", b =>
@@ -382,7 +384,7 @@ namespace MvcIBF.Migrations
 
                     b.HasKey("MovieId");
 
-                    b.ToTable("Movies", (string)null);
+                    b.ToTable("Movies");
                 });
 
             modelBuilder.Entity("MvcIBF.Models.Movie_Country", b =>
@@ -397,7 +399,7 @@ namespace MvcIBF.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Movie_Countries", (string)null);
+                    b.ToTable("Movie_Countries");
                 });
 
             modelBuilder.Entity("MvcIBF.Models.Movie_Friendship", b =>
@@ -415,7 +417,7 @@ namespace MvcIBF.Migrations
 
                     b.HasIndex("FriendshipId");
 
-                    b.ToTable("Movie_Friendships", (string)null);
+                    b.ToTable("Movie_Friendships");
                 });
 
             modelBuilder.Entity("MvcIBF.Models.Movie_Genre", b =>
@@ -430,7 +432,7 @@ namespace MvcIBF.Migrations
 
                     b.HasIndex("GenreId");
 
-                    b.ToTable("Movie_Genres", (string)null);
+                    b.ToTable("Movie_Genres");
                 });
 
             modelBuilder.Entity("MvcIBF.Models.Movie_Mood", b =>
@@ -445,7 +447,7 @@ namespace MvcIBF.Migrations
 
                     b.HasIndex("MoodId");
 
-                    b.ToTable("Movie_Moods", (string)null);
+                    b.ToTable("Movie_Moods");
                 });
 
             modelBuilder.Entity("MvcIBF.Models.Movie_Star_Function", b =>
@@ -465,7 +467,7 @@ namespace MvcIBF.Migrations
 
                     b.HasIndex("StarId");
 
-                    b.ToTable("Movie_Stars_Functions", (string)null);
+                    b.ToTable("Movie_Stars_Functions");
                 });
 
             modelBuilder.Entity("MvcIBF.Models.Movie_VOD", b =>
@@ -480,7 +482,7 @@ namespace MvcIBF.Migrations
 
                     b.HasIndex("VODId");
 
-                    b.ToTable("Movies_VODs", (string)null);
+                    b.ToTable("Movies_VODs");
                 });
 
             modelBuilder.Entity("MvcIBF.Models.Rating", b =>
@@ -501,7 +503,7 @@ namespace MvcIBF.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("Ratings", (string)null);
+                    b.ToTable("Ratings");
                 });
 
             modelBuilder.Entity("MvcIBF.Models.Star", b =>
@@ -539,7 +541,7 @@ namespace MvcIBF.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Stars", (string)null);
+                    b.ToTable("Stars");
                 });
 
             modelBuilder.Entity("MvcIBF.Models.VOD", b =>
@@ -559,7 +561,7 @@ namespace MvcIBF.Migrations
                     b.HasIndex("VodName")
                         .IsUnique();
 
-                    b.ToTable("VODs", (string)null);
+                    b.ToTable("VODs");
                 });
 
             modelBuilder.Entity("MvcIBF.Models.ApplicationUser", b =>

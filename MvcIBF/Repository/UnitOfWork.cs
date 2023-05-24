@@ -21,6 +21,7 @@ namespace MvcIBF.Repository
             ApplicationUser = new ApplicationUserRepository(_db);
             Rating = new RatingRepository(_db);
             Friendship = new FriendshipRepository(_db);
+            Recommendation = new RecommendationRepository(_db);
         }
         public IVODRepository VOD { get; private set; }
         public IMovieRepository Movie { get; private set; }
@@ -34,6 +35,7 @@ namespace MvcIBF.Repository
         public IApplicationUserRepository ApplicationUser { get; private set; }
 
         public IFriendshipRepository Friendship {get; private set; }
+        public IRecommendationRepository Recommendation { get; private set; }
 
         public void Save()
         {

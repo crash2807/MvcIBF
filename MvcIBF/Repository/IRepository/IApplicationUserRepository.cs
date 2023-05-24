@@ -6,5 +6,6 @@ namespace MvcIBF.Repository.IRepository
     {
         void Update(ApplicationUser user);
         ApplicationUser GetById(string id);
+        ApplicationUser GetUsersRecommendations(int friendshipId, int movieId);
     }
 }
