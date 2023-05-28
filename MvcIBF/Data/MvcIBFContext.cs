@@ -108,7 +108,10 @@ namespace MvcIBF.Data
             modelBuilder.Entity<Movie_Friendship>().HasOne(f=> f.Friendship)
                 .WithMany(f=> f.Movie_Friendships)
                 .HasForeignKey(fi=> fi.FriendshipId);
+           
 
         }
+        
+
     }
 }

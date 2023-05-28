@@ -10,7 +10,7 @@
     <h4>Film</h4>
     <hr />
     <div class="col-md-4">
-        @if (@Model.URLs != null)
+        @if (@Model.URLs.Count() != 0)
         {
             <img src="@Model.URLs.First()" width="100%" alt="@Model.MovieTitle">
         }

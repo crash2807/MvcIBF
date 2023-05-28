@@ -61,6 +61,6 @@ namespace MvcIBF.Models.ViewModels.MovieVM
         public ICollection<Rating>? Ratings { get; set; }
         public int Rating { get;  set; }
         public double AverageRating { get;  set; }
-        public string UserComment { get;  set; }
+        public string? UserComment { get;  set; }
     }
 }

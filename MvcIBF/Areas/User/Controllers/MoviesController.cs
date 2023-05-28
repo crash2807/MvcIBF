@@ -80,20 +80,20 @@ namespace MvcIBF.Areas.User.Controllers
             {
                 return NotFound();
             }
-            var movieVM = _context.Movie
-                .GetMovieVM(id);
+            //var movieVM = _context.Movie
+                //.GetMovieVM(id);
             var movie = _context.Movie.GetMovie(id);
-            var vm = _mapper.Map<MovieVM>(movieVM);
-            if (movieVM == null)
-            {
-                return NotFound();
-            }
+            //var vm = _mapper.Map<MovieVM>(movieVM);
+            //if (movieVM == null)
+            //{
+            //    return NotFound();
+            //}
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             var userId = claim.Value;
             var user = _context.ApplicationUser.GetFirstOrDefault(u => u.Id == userId);
             var rating = _context.Rating
-                .GetFirstOrDefault(r => r.ApplicationUserId == userId && r.MovieId == movieVM.MovieId);
+                .GetFirstOrDefault(r => r.ApplicationUserId == userId && r.MovieId == movie.MovieId);
             if (rating == null)
             {
                 rating = new Rating

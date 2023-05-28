@@ -236,7 +236,7 @@ namespace MvcIBF.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(movie);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Movies/Delete/5

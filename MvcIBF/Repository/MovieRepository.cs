@@ -1,4 +1,5 @@
-﻿using MvcIBF.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using MvcIBF.Data;
 using MvcIBF.Models;
 using MvcIBF.Models.ViewModels.MovieVM;
 using MvcIBF.Repository.IRepository;
@@ -150,65 +151,69 @@ namespace MvcIBF.Repository
 
         public MovieVM GetMovieVM(int id)
         {
-            MovieVM movie = _db.Movies.Where(x => x.MovieId == id).Select(m => new MovieVM()
-            {
-                MovieId= m.MovieId,
-                MovieTitle = m.MovieTitle,
-                MovieDescription = m.MovieDescription,
-                ReleaseDate = m.ReleaseDate,
-                Runtime = m.Runtime,
-                VodNames = m.Movie_VODs.Select(n => n.VOD.VodName).ToList(),
-                SelectedVODs= m.Movie_VODs.Select(n => n.VOD.VodId).ToArray(),
-                MoodNames = m.Movie_Moods.Select(n => n.Mood.MoodName).ToList(),
-                SelectedMoods = m.Movie_Moods.Select(n => n.Mood.MoodId).ToArray(),
-                GenreNames = m.Movie_Genres.Select(n => n.Genre.GenreName).ToList(),
-                SelectedGenres = m.Movie_Genres.Select(n => n.Genre.GenreId).ToArray(),
-                CountryNames = m.Movie_Countries.Select(n => n.Country.CountryName).ToList(),
-                SelectedCountries = m.Movie_Countries.Select(n => n.Country.CountryId).ToArray(),
-                URLs=m.Materials.Select(n=>n.URL).ToList(),
-                StarsFunctionsList=m.Movie_Stars_Functions.OrderBy(m => m.FunctionId).ToList()             
-                
-                
+            var movie = _db.Movies
+        .Include(m => m.Movie_VODs).ThenInclude(mv => mv.VOD)
+        .Include(m => m.Movie_Moods).ThenInclude(mm => mm.Mood)
+        .Include(m => m.Movie_Genres).ThenInclude(mg => mg.Genre)
+        .Include(m => m.Movie_Countries).ThenInclude(mc => mc.Country)
+        .Include(m => m.Materials)
+        .Include(m => m.Movie_Stars_Functions).ThenInclude(msf => msf.Star).ThenInclude(s => s.Country)
+        .Include(m => m.Movie_Stars_Functions).ThenInclude(msf => msf.Function)
+        .FirstOrDefault(x => x.MovieId == id);
 
-            }).First();
-            if (movie.StarsFunctionsList != null)
+            if (movie == null)
             {
-                foreach (var Movie_Star_Function in movie.StarsFunctionsList)
+                return null;
+            }
+
+            var movieVM = new MovieVM
+            {
+                MovieId = movie.MovieId,
+                MovieTitle = movie.MovieTitle,
+                MovieDescription = movie.MovieDescription,
+                ReleaseDate = movie.ReleaseDate,
+                Runtime = movie.Runtime,
+                VodNames = movie.Movie_VODs.Select(n => n.VOD.VodName).ToList(),
+                SelectedVODs = movie.Movie_VODs.Select(n => n.VOD.VodId).ToArray(),
+                MoodNames = movie.Movie_Moods.Select(n => n.Mood.MoodName).ToList(),
+                SelectedMoods = movie.Movie_Moods.Select(n => n.Mood.MoodId).ToArray(),
+                GenreNames = movie.Movie_Genres.Select(n => n.Genre.GenreName).ToList(),
+                SelectedGenres = movie.Movie_Genres.Select(n => n.Genre.GenreId).ToArray(),
+                CountryNames = movie.Movie_Countries.Select(n => n.Country.CountryName).ToList(),
+                SelectedCountries = movie.Movie_Countries.Select(n => n.Country.CountryId).ToArray(),
+                URLs = movie.Materials.Select(n => n.URL).ToList(),
+                StarsFunctionsList = movie.Movie_Stars_Functions.OrderBy(m => m.FunctionId).ToList(),
+            };
+
+            if (movieVM.StarsFunctionsList != null)
+            {
+                foreach (var msf in movieVM.StarsFunctionsList)
                 {
-                    var StarId = Movie_Star_Function.StarId;
-                    Star star = _db.Stars.Where(x => x.StarId == StarId).Select(m => new Star()
+                    msf.Star = new Star
                     {
-                        FirstName = m.FirstName,
-                        LastName = m.LastName,
-                        ProfilePictureURL= m.ProfilePictureURL,
-                        OtherName = m.OtherName,
-                        StarId = StarId,
-                        Country = m.Country,
-                        DateOfBirth = m.DateOfBirth,
-                        DateOfDeath = m.DateOfDeath,
-                        CountryId = m.CountryId
-                    }).First();
-                    Movie_Star_Function.Star = star;
-                    var FunctionId = Movie_Star_Function.FunctionId;
-                    Function function = _db.Functions.Where(x => x.FunctionId == FunctionId).Select(f => new Function()
+                        StarId = msf.StarId,
+                        FirstName = msf.Star.FirstName,
+                        LastName = msf.Star.LastName,
+                        ProfilePictureURL = msf.Star.ProfilePictureURL,
+                        OtherName = msf.Star.OtherName,
+                        DateOfBirth = msf.Star.DateOfBirth,
+                        DateOfDeath = msf.Star.DateOfDeath,
+                        Country = msf.Star.Country,
+                        CountryId = msf.Star.CountryId
+                    };
+
+                    msf.Function = new Function
                     {
-                        FunctionId = f.FunctionId,
-                        FunctionName = f.FunctionName
-                    }).First();
-                    Movie_Star_Function.Function = function;
+                        FunctionId = msf.FunctionId,
+                        FunctionName = msf.Function.FunctionName
+                    };
                 }
             }
-            var ratings = _db.Ratings.Where(r => r.MovieId == id);
-            if (ratings.Any())
-            {
-                movie.AverageRating = ratings.Average(r => r.RatingValue);
-            }
-            else
-            {
-                movie.AverageRating = 0;
-            }
 
-            return movie;
+            var ratings = _db.Ratings.Where(r => r.MovieId == id);
+            movieVM.AverageRating = ratings.Any() ? ratings.Average(r => r.RatingValue) : 0;
+
+            return movieVM;
         }
 
         public void AddProperties(MovieVM vm, Movie movie)
@@ -389,6 +394,63 @@ namespace MvcIBF.Repository
         public void Attach(Movie movie)
         {
             _db.Attach(movie);
+        }
+
+        public List<Movie> FilterMovies(DateTime? releaseDateFrom, DateTime? releaseDateTo, int? runtime, List<int>? SelectedVODs, List<int>? SelectedMoods, List<int>? SelectedCountries, List<int>? SelectedGenres)
+        {
+            var query = _db.Movies.Include(m => m.Movie_VODs)
+                            .Include(m => m.Movie_Moods)
+                            .Include(m => m.Movie_Genres)
+                            .Include(m => m.Movie_Countries)
+                            .AsQueryable();
+            if (releaseDateFrom.HasValue)
+            {
+                query = query.Where(m => m.ReleaseDate.Date >= releaseDateFrom.Value.Date);
+            }
+
+            if (releaseDateTo.HasValue)
+            {
+                query = query.Where(m => m.ReleaseDate.Date <= releaseDateTo.Value.Date);
+            }
+
+            if (runtime.HasValue)
+            {
+                switch (runtime.Value)
+                {
+                    case 1: // < 60 min
+                        query = query.Where(m => m.Runtime < 60);
+                        break;
+                    case 2: // < 90 min
+                        query = query.Where(m => m.Runtime < 90);
+                        break;
+                    case 3: // < 120 min
+                        query = query.Where(m => m.Runtime < 120);
+                        break;
+                    case 4: // > 120 min
+                        query = query.Where(m => m.Runtime > 120);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (SelectedVODs != null && SelectedVODs.Any())
+            {
+                query = query.Where(m => m.Movie_VODs.Any(v => SelectedVODs.Contains(v.VODId)));
+            }
+            if (SelectedGenres != null && SelectedGenres.Any())
+            {
+                query = query.Where(m => m.Movie_Genres.Any(v => SelectedGenres.Contains(v.GenreId)));
+            }
+            if (SelectedCountries != null && SelectedCountries.Any())
+            {
+                query = query.Where(m => m.Movie_Countries.Any(v => SelectedCountries.Contains(v.CountryId)));
+            }
+            if (SelectedMoods != null && SelectedMoods.Any())
+            {
+                query = query.Where(m => m.Movie_Moods.Any(v => SelectedMoods.Contains(v.MoodId)));
+            }
+            return query.ToList();
+            
         }
     }
 }

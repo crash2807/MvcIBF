@@ -1,0 +1,35 @@
+﻿@model MvcIBF.Models.ViewModels.MovieVM.MovieFilterVM
+
+<h2>Znalezione filmy</h2>
+
+@if (Model.FilteredMovies != null && Model.FilteredMovies.Count > 0)
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Tytuł</th>
+                <th>Data wydania</th>
+                <th>Czas trwania</th>
+                <th>Opis</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var movie in Model.FilteredMovies)
+            {
+                <tr>
+                    <td>@movie.MovieTitle</td>
+                    <td>@movie.ReleaseDate.ToShortDateString()</td>
+                    <td>@movie.Runtime</td>
+                    <td>@movie.MovieDescription</td>
+                    <td>
+                    <a>@Html.ActionLink("Szczegóły", "Details", "Movies", new { id = movie.MovieId }, null)</a>
+                </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Nie znaleziono filmów z takimi kryteriami.</p>
+}

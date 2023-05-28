@@ -2,6 +2,7 @@
 using MvcIBF.Models;
 using MvcIBF.Repository.IRepository;
 
+
 namespace MvcIBF.Repository
 {
     public class VODRepository : Repository<VOD>, IVODRepository
@@ -11,7 +12,14 @@ namespace MvcIBF.Repository
         {
             _db = db;
         }
-        
+
+        public List<VOD> GetAllMovieVods()
+        {
+            return _db.Movies_VODs.Select(mv => mv.VOD)
+            .Distinct()
+            .ToList(); ;
+            
+        }
 
         public void Update(VOD vod)
         {

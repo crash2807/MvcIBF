@@ -30,7 +30,7 @@
         }
     </div>
     <div>
-        @if(@Model.Rating != 0)
+        @if (@Model.Rating != 0)
         {
             <p>Twoja ocena: @Model.Rating</p>
             <p>Twój komentarz do oceny: @Model.UserComment</p>
@@ -41,39 +41,39 @@
         }
     </div>
     @if (User.Identity.IsAuthenticated)
-{
-    <div>
-    <a asp-action="FriendsRating" asp-route-id="@Model.MovieId">Wyświetl oceny znajomych</a>
-    </div>
-    <div>
-    <a asp-action="CreateRecommendation" asp-route-id="@Model.MovieId">Zarekomenduj film znajomemu</a>
-    </div>
-    <h3>Oceń film:</h3>
-    <form asp-controller="Movies" asp-action="Details" method="post">
-        <input type="hidden" name="id" value="@Model.MovieId" />
+    {
         <div>
-            <label for="ratingValue">Ocena:</label>
-            <select name="ratingValue" id="ratingValue">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-            </select>
+            <a asp-action="FriendsRating" asp-route-id="@Model.MovieId">Wyświetl oceny znajomych</a>
         </div>
         <div>
-            <label for="comment">Kometarz:</label>
-            <textarea name="comment" id="comment"></textarea>
+            <a asp-action="CreateRecommendation" asp-route-id="@Model.MovieId">Zarekomenduj film znajomemu</a>
         </div>
-        <button type="submit">Oceń</button>
-        @Html.AntiForgeryToken()
-    </form>
-}
+        <h3>Oceń film:</h3>
+        <form asp-controller="Movies" asp-action="Details" method="post">
+            <input type="hidden" name="id" value="@Model.MovieId" />
+            <div>
+                <label for="ratingValue">Ocena:</label>
+                <select name="ratingValue" id="ratingValue">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+            </div>
+            <div>
+                <label for="comment">Kometarz:</label>
+                <textarea name="comment" id="comment"></textarea>
+            </div>
+            <button type="submit">Oceń</button>
+            @Html.AntiForgeryToken()
+        </form>
+    }
     <dl class="row">
 
         <dt class="col-sm-2">
@@ -193,7 +193,7 @@
 
             </div>
         }
-        else if(Model.URLs.Count() != 0)
+        else if (Model.URLs.Count() != 0)
         {
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.URLs)
@@ -202,6 +202,36 @@
         }
 
     }
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .name-column {
+            white-space: nowrap;
+        }
+    </style>
     @if (Model.StarsFunctionsList.Count() != 0)
     {
         <dt class="col-sm-2">
@@ -211,7 +241,6 @@
             <thead>
                 <tr>
                     <th>Zdjęcie profilowe</th>
-                    <th></th>
                     <th>Gwiazda</th>
                     <th>Funkcja</th>
                 </tr>
@@ -221,11 +250,10 @@
                 {
                     <tr>
                         <td class="align-middle">
-                            <img class="rounded-circle" src="@Movie_Star_Function.Star.ProfilePictureURL" alt="@Movie_Star_Function.Star.LastName" style="max-width: 150px;max-height:150px" />
+                            <img class="profile-image" src="@Movie_Star_Function.Star.ProfilePictureURL" alt="@Movie_Star_Function.Star.LastName" />
                         </td>
-                        <td></td>
-                        <td>@Movie_Star_Function.Star.FirstName @Movie_Star_Function.Star.LastName</td>
-                        <td>@Movie_Star_Function.Function.FunctionName</td>
+                        <td class="align-middle name-column">@Movie_Star_Function.Star.FirstName @Movie_Star_Function.Star.LastName</td>
+                        <td class="align-middle">@Movie_Star_Function.Function.FunctionName</td>
                     </tr>
                 }
             </tbody>

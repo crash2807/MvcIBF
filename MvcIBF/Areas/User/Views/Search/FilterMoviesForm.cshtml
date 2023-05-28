@@ -1,0 +1,49 @@
+﻿@model MvcIBF.Models.ViewModels.MovieVM.MovieFilterVM
+
+<h2>Wyszukaj filmy</h2>
+
+@using (Html.BeginForm("FilterMoviesResult", "Search", FormMethod.Post))
+{
+    
+    <div>
+        @Html.LabelFor(m => m.ReleaseDateFrom)
+        @Html.TextBoxFor(m => m.ReleaseDateFrom, new { type = "date" })
+    </div>
+
+    <div>
+        @Html.LabelFor(m => m.ReleaseDateTo)
+        @Html.TextBoxFor(m => m.ReleaseDateTo, new { type = "date" })
+    </div>
+
+   <div>
+        @Html.LabelFor(m => m.Runtime)
+        @Html.DropDownListFor(m => m.Runtime, new SelectList(new[]
+        {
+            new { Value = 1, Text = "< 60 min" },
+            new { Value = 2, Text = "< 90 min" },
+            new { Value = 3, Text = "< 120 min" },
+            new { Value = 4, Text = "> 120 min" }
+        }, "Value", "Text"), "Wybierz czas trwania")
+    </div>   
+
+    <div>
+        @Html.LabelFor(m => m.SelectedVODs)
+        @Html.ListBoxFor(m => m.SelectedVODs, Model.VODs)
+    </div>
+    <div>
+        @Html.LabelFor(m => m.Genres)
+        @Html.ListBoxFor(m => m.SelectedGenres, Model.Genres)
+    </div>
+   
+    <div>
+        @Html.LabelFor(m => m.Moods)
+        @Html.ListBoxFor(m => m.SelectedMoods, Model.Moods)
+    </div>
+     <div>
+        @Html.LabelFor(m => m.Countries)
+        @Html.ListBoxFor(m => m.SelectedCountries, Model.Countries)
+    </div>
+
+
+    <input type="submit" value="Szukaj" />
+}

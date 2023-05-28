@@ -13,5 +13,6 @@ namespace MvcIBF.Repository.IRepository
         Movie GetMovie(int id);
         bool CheckEntry(Movie movie);
         void Attach(Movie movie);
+        List<Movie> FilterMovies(DateTime? releaseDateFrom, DateTime? releaseDateTo, int? runtime, List<int>? selectedVOD, List<int>? SelectedMoods, List<int>? SelectedCountries, List<int>? SelectedGenres);
     }
 }
