@@ -30,6 +30,7 @@
                             <li class="nav-item">
                                 <a class="navbar-brand" asp-area="Guest" asp-controller="Stars" asp-action="Index">Gwiazdy</a>
                             </li>
+
                         }
                         @if (User.IsInRole("Admin"))
                         {
@@ -53,16 +54,36 @@
                             </li>
                             <li class="nav-item">
                                 <a class="navbar-brand" asp-area="Admin" asp-controller="Functions" asp-action="Index">Funkcje</a>
+                            </li>                            
+                             <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="UsersDropdown" role="button" data-toggle="dropdown" aria-haspopup="false" aria-expanded="true">
+                                    Zarządzaj użytkownikami
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="UsersDropdown">
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Users" asp-action="Index">Usuń użytkownika</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Users" asp-action="IndexModeratorsAdd">Nadaj uprawnienia</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Users" asp-action="IndexModeratorsDelete">Zabierz uprawnienia</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="friendshipDropdown" role="button" data-toggle="dropdown" aria-haspopup="false" aria-expanded="true">
+                                    Znajomi
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="friendshipDropdown">
+                                    <a class="dropdown-item" asp-area="User" asp-controller="Friendships" asp-action="Index">Szukaj znajomego</a>
+                                    <a class="dropdown-item" asp-area="User" asp-controller="Friendships" asp-action="FriendsList">Lista znajomych</a>
+                                    <a class="dropdown-item" asp-area="User" asp-controller="Recommendations" asp-action="Index">Rekomendacje znajomych</a>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="navbar-brand" asp-area="User" asp-controller="Search" asp-action="FilterMoviesForm">Szukaj filmu</a>
                             </li>
                         }
-                        else if (User.IsInRole("User"))
+                        else if (User.IsInRole("User") && !User.IsInRole("Moderator"))
                         {
                             <li class="nav-item">
                                 <a class="navbar-brand" asp-area="User" asp-controller="Movies" asp-action="Index">Filmy</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="navbar-brand" asp-area="User" asp-controller="VODs" asp-action="Index">VOD</a>
-                            </li>
+                            </li>                            
                             <li class="nav-item">
                                 <a class="navbar-brand" asp-area="User" asp-controller="Stars" asp-action="Index">Gwiazdy</a>
                             </li>
@@ -108,6 +129,22 @@
                             </li>
                             <li class="nav-item">
                                 <a class="navbar-brand" asp-area="Moderator" asp-controller="Functions" asp-action="Index">Funkcje</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="friendshipDropdown" role="button" data-toggle="dropdown" aria-haspopup="false" aria-expanded="true">
+                                    Znajomi
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="friendshipDropdown">
+                                    <a class="dropdown-item" asp-area="User" asp-controller="Friendships" asp-action="Index">Szukaj znajomego</a>
+                                    <a class="dropdown-item" asp-area="User" asp-controller="Friendships" asp-action="FriendsList">Lista znajomych</a>
+                                    <a class="dropdown-item" asp-area="User" asp-controller="Recommendations" asp-action="Index">Rekomendacje znajomych</a>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="navbar-brand" asp-area="User" asp-controller="Search" asp-action="FilterMoviesForm">Szukaj filmu</a>
+                            </li>
+                            <li class="nav-item"> 
+                                <a class="dropdown-item" asp-area="Admin" asp-controller="Users" asp-action="Index">Usuń użytkownika</a>
                             </li>
                         }
 

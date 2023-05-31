@@ -17,14 +17,15 @@ builder.Services.AddDbContext<MvcIBFContext>(options => {
 });
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddDefaultTokenProviders()
     .AddEntityFrameworkStores<MvcIBFContext>();
+
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddSingleton<IEmailSender, EmailSender>();
 builder.Services.AddControllersWithViews();
-builder.Services.AddHttpClient("myHttpClient", client =>
-{
-    client.Timeout = TimeSpan.FromSeconds(60); // zmiana domyœlnego timeoutu
-});
+//builder.Services.AddHttpClient("myHttpClient", client =>
+//{
+//    client.Timeout = TimeSpan.FromSeconds(60); // zmiana domyœlnego timeoutu
+//});
 var config = new AutoMapper.MapperConfiguration(cfg =>
 {
     cfg.AddProfile(new Helper());

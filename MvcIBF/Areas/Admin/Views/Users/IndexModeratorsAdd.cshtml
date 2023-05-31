@@ -1,0 +1,52 @@
+﻿@using MvcIBF.Models
+@model IEnumerable<MvcIBF.Models.ApplicationUser>
+
+@{
+    ViewBag.Title = "Użytkownicy bez roli moderatora";
+}
+<h1>Nadaj uprawnienia moderatorskie</h1>
+<form asp-controller="Users" asp-action="IndexModeratorsAdd">
+    <p>
+        Nazwa użytkownika: <input type="text" name="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProfilePictureUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.ProfilePictureUrl))
+                    {
+                        <img src="@item.ProfilePictureUrl" alt="Profile Picture" style="max-width: 10%; max-height: 10%;" />
+                    }
+                    else
+                    {
+                        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png" alt="Default Profile Picture" style="max-width: 10%; max-height: 10%;" />
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    <form asp-action="AddModeratorRole" asp-route-userId="@item.Id">
+                        <button type="submit">Nadaj uprawnienia Moderatora</button>
+                    </form>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
