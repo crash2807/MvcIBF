@@ -4,13 +4,13 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Twoje oceny</h1>
 
 
 <table class="table">
     <thead>
         <tr>
-            <th>Plakat</th>
+            
             <th>
                 @Html.DisplayNameFor(model => model.Movie.MovieTitle)
             </th>
@@ -25,9 +25,7 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td class="align-middle">
-                    <img class="rounded-circle" src="@item.Movie.Materials.FirstOrDefault()" alt="@item.Movie.MovieTitle" style="max-width: 150px;max-height:150px" />
-                </td>
+               
                 <td>
                     @Html.DisplayFor(modelItem => item.Movie.MovieTitle)
                 </td>

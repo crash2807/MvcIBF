@@ -40,7 +40,7 @@ namespace MvcIBF.Areas.Guest.Controllers
             }
             var vm = _mapper.Map<List<MovieVM>>(movies);
 
-            return View(vm);
+            return View(vm.OrderBy(x=>x.MovieTitle));
         }
 
         // GET: Movies/Details/5

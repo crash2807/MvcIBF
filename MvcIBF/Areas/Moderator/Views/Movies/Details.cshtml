@@ -22,7 +22,7 @@
     <div>
         @if (@Model.AverageRating != 0)
         {
-            <p>Średnia ocen: @Model.AverageRating</p>
+            <p>Średnia ocen: @Model.AverageRating.ToString("0.00")</p>
         }
         else
         {

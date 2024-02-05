@@ -24,7 +24,8 @@ namespace MvcIBF.Areas.Admin.Controllers
         public ActionResult Index()
         {
             IEnumerable<Country> countries = _context.Country.GetAll();
-            var vm = _mapper.Map<List<CountryVM>>(countries);
+            var sortedCountries = countries.OrderBy(c => c.CountryName);
+            var vm = _mapper.Map<List<CountryVM>>(sortedCountries);
             return View(vm);
         }
 

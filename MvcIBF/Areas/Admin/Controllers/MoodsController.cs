@@ -24,7 +24,8 @@ namespace MvcIBF.Areas.Admin.Controllers
         public ActionResult Index()
         {
             IEnumerable<Mood> moods= _context.Mood.GetAll();
-            var vm = _mapper.Map<List<MoodVM>>(moods);
+            var sortedMoods = moods.OrderBy(m => m.MoodName);
+            var vm = _mapper.Map<List<MoodVM>>(sortedMoods);
             return View(vm);
         }
 

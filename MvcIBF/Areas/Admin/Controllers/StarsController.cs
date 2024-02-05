@@ -25,7 +25,8 @@ namespace MvcIBF.Areas.Admin.Controllers
         public ActionResult Index()
         {
             IEnumerable<Star> stars = _context.Star.GetAll();
-            var vm = _mapper.Map<List<StarVM>>(stars);
+            var sortedStars = stars.OrderBy(s => s.LastName);
+            var vm = _mapper.Map<List<StarVM>>(sortedStars);
             return View(vm);
         }
 
@@ -46,7 +47,8 @@ namespace MvcIBF.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-
+            //star.FunctionsList = star.FunctionsList.OrderBy(x => x.FunctionName);
+            //star.MoviesList = star.MoviesList.OrderBy(x => x.MovieTitle);
             return View(star);
         }
 
@@ -189,8 +191,8 @@ namespace MvcIBF.Areas.Admin.Controllers
         {
             var star = _context.Star
                         .GetStarVM(id);
-            var functions = _context.Function.GetAll();
-            var movies = _context.Movie.GetAll();
+            var functions = _context.Function.GetAll().OrderBy(x=>x.FunctionName);
+            var movies = _context.Movie.GetAll().OrderBy(x=>x.MovieTitle);
             star.FunctionsList = functions;
             star.MoviesList = movies;
             return View(star);
@@ -242,8 +244,8 @@ namespace MvcIBF.Areas.Admin.Controllers
             if (star == null)
             {
                 return NotFound();
-            }
-
+            }            
+            
             return View(star);
         }
         [HttpPost, ActionName("DeleteMovies")]

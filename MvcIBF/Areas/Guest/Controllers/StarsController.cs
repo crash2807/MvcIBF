@@ -26,7 +26,7 @@ namespace MvcIBF.Areas.Guest.Controllers
         {
             IEnumerable<Star> stars = _context.Star.GetAll();
             var vm = _mapper.Map<List<StarVM>>(stars);
-            return View(vm);
+            return View(vm.OrderBy(x=>x.LastName));
         }
 
         // GET: StarController/Details/5

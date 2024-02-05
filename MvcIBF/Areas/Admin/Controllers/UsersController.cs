@@ -27,12 +27,19 @@ namespace MvcIBF.Areas.Admin.Controllers
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             var userId = claim.Value;
             var currentUser = _context.ApplicationUser.GetById(userId);
+            var adminRole = await _context.ApplicationUser.GetRoleByNameAsync("Admin");
+            var admins = _context.ApplicationUser.GetUsersInRole(adminRole);
             if (!string.IsNullOrEmpty(searchString))
             {
                 users = users.Where(u => u.UserName!.Contains(searchString));
             }
             users = users.Where(u => u.Id != currentUser.Id);
-            return View(users);
+            if (admins.Count > 0)
+            {
+                users = users.Except(admins);
+            }
+            var sortedUsers= users.OrderBy(u=> u.UserName);
+            return View(sortedUsers);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -81,7 +88,8 @@ namespace MvcIBF.Areas.Admin.Controllers
             }
             
             users = users.Where(u => u.Id != currentUser.Id).Except(moderators);
-            return View(users);
+            var sortedUsers = users.OrderBy(u => u.UserName);
+            return View(sortedUsers);
         }
         public async Task<IActionResult> AddModeratorRole(string userId)
         {
@@ -107,9 +115,10 @@ namespace MvcIBF.Areas.Admin.Controllers
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             var userId = claim.Value;
-            var currentUser = _context.ApplicationUser.GetById(userId);            
-            
-            return View(moderators);
+            var currentUser = _context.ApplicationUser.GetById(userId);
+            var sortedModerators = moderators.OrderBy(u => u.UserName);
+
+            return View(sortedModerators);
         }
         public async Task<IActionResult> RevokeModeratorRole(string userId)
         {

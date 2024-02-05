@@ -14,7 +14,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var movie in Model.FilteredMovies)
+            @foreach (var movie in Model.FilteredMovies.OrderBy(x=>x.MovieTitle))
             {
                 <tr>
                     <td>@movie.MovieTitle</td>

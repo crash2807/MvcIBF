@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MvcIBF.Models.ViewModels.MovieVM;
 using MvcIBF.Repository.IRepository;
+using System.Security.Claims;
 
 namespace MvcIBF.Areas.User.Controllers
 {
@@ -20,7 +21,7 @@ namespace MvcIBF.Areas.User.Controllers
         {
             var filterViewModel = new MovieFilterVM();
 
-            // Fetch the necessary data for populating the form fields
+            // Pobieranie danych do list
             filterViewModel.VODs = new MultiSelectList(_context.VOD.GetAll(), "VodId", "VodName");
             filterViewModel.Countries = new MultiSelectList(_context.Country.GetAll(), "CountryId", "CountryName");
             filterViewModel.Genres = new MultiSelectList(_context.Genre.GetAll(), "GenreId", "GenreName");
@@ -31,6 +32,20 @@ namespace MvcIBF.Areas.User.Controllers
         [HttpPost]
         public IActionResult FilterMoviesResult(MovieFilterVM filterViewModel)
         {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            var userId = claim.Value;
+            var ratings = _context.Rating.GetRatingsByUserId(userId);
+            var seenMovies = new List<Models.Movie>();
+            
+            foreach (var rating in ratings)
+            {
+                var movie = _context.Movie.GetMovie(rating.MovieId);
+                rating.Movie = movie;
+                seenMovies.Add(movie);
+            }
+            
+            
             var filteredMovies = _context.Movie.FilterMovies(                
                 filterViewModel.ReleaseDateFrom,
                 filterViewModel.ReleaseDateTo,
@@ -40,8 +55,43 @@ namespace MvcIBF.Areas.User.Controllers
                 filterViewModel.SelectedCountries,
                 filterViewModel.SelectedGenres
             );
+            if (filterViewModel.AllMovies.HasValue)
+            {
+                if (filterViewModel.AllMovies == true)
+                {
+                    filterViewModel.FilteredMovies = filteredMovies;
+                }
+                else
+                {
+                    var filteredMoviesWithoutSeenOnes = new HashSet<Models.Movie>(); 
 
-            filterViewModel.FilteredMovies = filteredMovies;
+                    foreach (var movie in filteredMovies)
+                    {
+                        var isSeen = false;
+
+                        foreach (var movie2 in seenMovies)
+                        {
+                            if (movie.MovieId == movie2.MovieId)
+                            {
+                                isSeen = true;
+                                break;
+                            }
+                        }
+
+                        if (!isSeen)
+                        {
+                            filteredMoviesWithoutSeenOnes.Add(movie);
+                        }
+                    }
+
+                    filterViewModel.FilteredMovies = filteredMoviesWithoutSeenOnes.ToList(); 
+
+                }
+            }
+            else
+            {
+                filterViewModel.FilteredMovies = filteredMovies;
+            }
 
             return View(filterViewModel);
         }

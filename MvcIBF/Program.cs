@@ -8,7 +8,7 @@ using AutoMapper;
 using MvcIBF.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-
+using MvcIBF.DbInitializer;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<MvcIBFContext>(options => { 
@@ -20,12 +20,10 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddDefaultTokenProvid
 
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddSingleton<IEmailSender, EmailSender>();
 builder.Services.AddControllersWithViews();
-//builder.Services.AddHttpClient("myHttpClient", client =>
-//{
-//    client.Timeout = TimeSpan.FromSeconds(60); // zmiana domyœlnego timeoutu
-//});
+
 var config = new AutoMapper.MapperConfiguration(cfg =>
 {
     cfg.AddProfile(new Helper());
@@ -35,12 +33,12 @@ builder.Services.AddSingleton(mapper);
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
+//using (var scope = app.Services.CreateScope())
+//{
+//    var services = scope.ServiceProvider;
 
-    SeedData.Initialize(services);
-}
+//    SeedData.Initialize(services);
+//}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -54,6 +52,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+SeedAdminUser();
 app.UseAuthentication();;
 
 app.UseAuthorization();
@@ -63,3 +62,13 @@ app.MapControllerRoute(
     pattern: "{area=User}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+
+void SeedAdminUser()
+{
+    using (var scope= app.Services.CreateScope())
+    {
+        var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+        dbInitializer.Initialize();
+    }
+}

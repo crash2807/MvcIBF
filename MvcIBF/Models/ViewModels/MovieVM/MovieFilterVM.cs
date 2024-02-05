@@ -13,6 +13,8 @@ namespace MvcIBF.Models.ViewModels.MovieVM
         public DateTime? ReleaseDateTo { get; set; }
         [Display(Name = "Czas trwania")]
         public int? Runtime { get; set; }
+        [Display(Name = "Uwzględniaj")]
+        public bool? AllMovies { get; set; }
         [Display(Name = "Opis")]
         public string MovieDescription { get; set; }
         [Display(Name = "Wybierz VOD")]

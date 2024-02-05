@@ -35,7 +35,8 @@ namespace MvcIBF.Areas.Moderator.Controllers
             {
                 movies = movies.Where(s => s.MovieTitle!.Contains(searchString));
             }
-            var vm = _mapper.Map<List<MovieVM>>(movies);
+            var sortedMovies = movies.OrderBy(m => m.MovieTitle);
+            var vm = _mapper.Map<List<MovieVM>>(sortedMovies);
 
             return View(vm);
         }
@@ -134,7 +135,7 @@ namespace MvcIBF.Areas.Moderator.Controllers
             }
             else
             {
-                return View(ratings);
+                return View(ratings.OrderBy(x => x.ApplicationUser.UserName));
             }
         }
         public async Task<IActionResult> CreateRecommendation(int id)
@@ -160,7 +161,7 @@ namespace MvcIBF.Areas.Moderator.Controllers
             if (unseenFriends.Count != 0)
             {
                 ViewData["MovieId"] = id;
-                return View("ChooseFriend", unseenFriends);
+                return View("ChooseFriend", unseenFriends.OrderBy(x => x.UserName));
             }
             else
             {

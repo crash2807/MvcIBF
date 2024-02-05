@@ -3,12 +3,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
+using Microsoft.AspNetCore.Identity;
+
 namespace MvcIBF.Models
 {
     public static class SeedData
     {
+
         public static void Initialize(IServiceProvider serviceProvider)
         {
+            
             using (var context = new MvcIBFContext(
                 serviceProvider.GetRequiredService<
                     DbContextOptions<MvcIBFContext>>()))

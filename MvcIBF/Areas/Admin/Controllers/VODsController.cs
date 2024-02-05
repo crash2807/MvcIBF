@@ -25,7 +25,8 @@ namespace MvcIBF.Areas.Admin.Controllers
         public IActionResult Index()
         {
             IEnumerable<VOD> vodsList = _context.VOD.GetAll();
-            var vm = _mapper.Map<List<VODVM>>(vodsList);
+            var sortedVods = vodsList.OrderBy(v => v.VodName);
+            var vm = _mapper.Map<List<VODVM>>(sortedVods);
 
             return View(vm);
         }

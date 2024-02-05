@@ -10,7 +10,7 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Plakat</th>
+            
             
             <th>
                 @Html.DisplayNameFor(model => model.Movie.MovieTitle)
@@ -26,16 +26,7 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
-                    @if (item.Movie.Materials.FirstOrDefault() != null)
-                    {
-                        <img src="@item.Movie.Materials.First()" alt="Poster Picture" style="max-width: 10%; max-height: 10%;" />
-                    }
-                    else
-                    {
-                        <img src="https://motivatevalmorgan.com/wp-content/uploads/2016/06/default-movie.jpg" alt="Default Profile Picture" style="max-width: 10%; max-height: 10%;" />
-                    }
-                </td>
+                
                 
                 <td>
                     @Html.DisplayFor(modelItem => item.Movie.MovieTitle)

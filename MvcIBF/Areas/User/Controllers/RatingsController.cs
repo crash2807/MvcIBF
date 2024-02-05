@@ -29,7 +29,7 @@ namespace MvcIBF.Areas.User.Controllers
                 var movie = _context.Movie.GetMovie(rating.MovieId);
                 rating.Movie = movie;
             }
-            return View(ratings);
+            return View(ratings.OrderBy(x=> x.Movie.MovieTitle));
         }
 
        

@@ -34,7 +34,7 @@ namespace MvcIBF.Areas.User.Controllers
             
             users = users.Where(u => u.Id != currentUser.Id).Except(currentFriends);
             
-            return View(users);
+            return View(users.OrderBy(x=>x.UserName));
         }
 
         // GET: FriendshipController/Details/5
@@ -96,7 +96,7 @@ namespace MvcIBF.Areas.User.Controllers
             {
                 currentFriends = currentFriends.Where(u => u.UserName.Contains(searchString)).ToList();
             }
-            return View(currentFriends);
+            return View(currentFriends.OrderBy(x=>x.UserName));
         }
 
         

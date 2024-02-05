@@ -24,7 +24,8 @@ namespace MvcIBF.Areas.Moderator.Controllers
         public ActionResult Index()
         {
             IEnumerable<Genre> genres = _context.Genre.GetAll();
-            var vm = _mapper.Map<List<GenreVM>>(genres);
+            var sortedGenres = genres.OrderBy(g => g.GenreName);
+            var vm = _mapper.Map<List<GenreVM>>(sortedGenres);
             return View(vm);
         }
 

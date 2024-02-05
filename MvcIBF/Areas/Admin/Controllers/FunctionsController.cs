@@ -24,7 +24,8 @@ namespace MvcIBF.Areas.Admin.Controllers
         public ActionResult Index()
         {
             IEnumerable<Function> functions = _context.Function.GetAll();
-            var vm = _mapper.Map<List<FunctionVM>>(functions);
+            var sortedFunctions = functions.OrderBy(f => f.FunctionName);
+            var vm = _mapper.Map<List<FunctionVM>>(sortedFunctions);
             return View(vm);
         }
 

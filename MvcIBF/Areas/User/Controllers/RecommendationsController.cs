@@ -29,7 +29,7 @@ namespace MvcIBF.Areas.User.Controllers
             {
                 return View("EmptyUserRecommendations");
             }
-            return View(recommendations);
+            return View(recommendations.OrderBy(x=>x.Movie.MovieTitle));
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

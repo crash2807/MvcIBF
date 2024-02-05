@@ -14,7 +14,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="Admin" asp-controller="Movies" asp-action="Index">IBF</a>
+                
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -24,6 +24,7 @@
 
                         @if (!User.Identity.IsAuthenticated)
                         {
+                            <a class="navbar-brand" asp-area="Guest" asp-controller="Movies" asp-action="Index">IBF</a>
                             <li class="nav-item">
                                 <a class="navbar-brand" asp-area="Guest" asp-controller="Movies" asp-action="Index">Filmy</a>
                             </li>
@@ -34,6 +35,7 @@
                         }
                         @if (User.IsInRole("Admin"))
                         {
+                            <a class="navbar-brand" asp-area="Admin" asp-controller="Movies" asp-action="Index">IBF</a>
                             <li class="nav-item">
                                 <a class="navbar-brand" asp-area="Admin" asp-controller="Movies" asp-action="Index">Filmy</a>
                             </li>
@@ -78,9 +80,13 @@
                             <li class="nav-item">
                                 <a class="navbar-brand" asp-area="User" asp-controller="Search" asp-action="FilterMoviesForm">Szukaj filmu</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="navbar-brand" asp-area="User" asp-controller="Ratings" asp-action="Index">Twoje oceny</a>
+                            </li>
                         }
                         else if (User.IsInRole("User") && !User.IsInRole("Moderator"))
                         {
+                            <a class="navbar-brand" asp-area="User" asp-controller="Movies" asp-action="Index">IBF</a>
                             <li class="nav-item">
                                 <a class="navbar-brand" asp-area="User" asp-controller="Movies" asp-action="Index">Filmy</a>
                             </li>                            
@@ -109,6 +115,7 @@
                         }
                         else if (User.IsInRole("Moderator"))
                         {
+                            <a class="navbar-brand" asp-area="Moderator" asp-controller="Movies" asp-action="Index">IBF</a>
                             <li class="nav-item">
                                 <a class="navbar-brand" asp-area="Moderator" asp-controller="Movies" asp-action="Index">Filmy</a>
                             </li>
@@ -145,6 +152,9 @@
                             </li>
                             <li class="nav-item"> 
                                 <a class="dropdown-item" asp-area="Admin" asp-controller="Users" asp-action="Index">Usuń użytkownika</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="navbar-brand" asp-area="User" asp-controller="Ratings" asp-action="Index">Twoje oceny</a>
                             </li>
                         }
 

@@ -25,7 +25,14 @@
             new { Value = 4, Text = "> 120 min" }
         }, "Value", "Text"), "Wybierz czas trwania")
     </div>   
-
+    <div>
+        @Html.LabelFor(m => m.AllMovies)
+        @Html.DropDownListFor(m => m.AllMovies, new SelectList(new[]
+        {
+            new { Value = true, Text = "Wszystkie filmy" },
+            new { Value = false, Text = "Tylko nieobejrzane" }            
+        }, "Value", "Text"), "Wybierz, które filmy uwzględniać")
+    </div>  
     <div>
         @Html.LabelFor(m => m.SelectedVODs)
         @Html.ListBoxFor(m => m.SelectedVODs, Model.VODs)

@@ -25,7 +25,8 @@ namespace MvcIBF.Areas.User.Controllers
         public ActionResult Index()
         {
             IEnumerable<Star> stars = _context.Star.GetAll();
-            var vm = _mapper.Map<List<StarVM>>(stars);
+            var sortedStars = stars.OrderBy(s => s.LastName);
+            var vm = _mapper.Map<List<StarVM>>(sortedStars);
             return View(vm);
         }
 
@@ -46,7 +47,8 @@ namespace MvcIBF.Areas.User.Controllers
             {
                 return NotFound();
             }
-
+            //star.FunctionsList = star.FunctionsList.OrderBy(x => x.FunctionName);
+            //star.MoviesList = star.MoviesList.OrderBy(x => x.MovieTitle);
             return View(star);
         }
 
